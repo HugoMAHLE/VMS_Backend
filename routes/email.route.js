@@ -8,7 +8,7 @@ emailRouter.post('/send', async (req, res) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      host: 'smtp-relay.gmail.com',
+      host: 'smtp.gmail.com',
       port: 465,
       secure: true, 
       auth: {
