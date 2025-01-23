@@ -173,17 +173,34 @@ const createVisit = async (name, reason, date, entry, uid) => {
   const response = await GetCompanyID(name);
   const companyid = response.id
   console.log("company: " + companyid)
+  const code = createVisitCode(date)
 
   const query = {
     text: `
-    INSERT INTO visits ("companyID", date, "setHour", "arrivalHour", "leaveHour", purpose, userid)
-    VALUES ($1, $2, $3, $4, $5, $6, $7)
+    INSERT INTO visits ("companyID", date, "setHour", "arrivalHour", "leaveHour", purpose, userid, code)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING "visitID"`,
-    values: [companyid, date, entry, entry, entry, reason, uid],
+    values: [companyid, date, entry, entry, entry, reason, uid, code],
   };
 
   const { rows } = await db.query(query);
   return rows;
+};
+
+const createVisitCode = (date) => {
+  const visitDate = new Date(date);
+
+  const year = visitDate.getFullYear().toString().slice(-2); // Last 2 digits of the year
+  const month = String(visitDate.getMonth() + 1).padStart(2, '0'); // Month (01-12)
+  const day = String(visitDate.getDate()).padStart(2, '0'); // Day (01-31)
+
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0'); // Hours (00-23)
+  const minutes = String(now.getMinutes()).padStart(2, '0'); // Minutes (00-59)
+
+  const visitCode = `${year}${month}${day}${hours}${minutes}`;
+
+  return visitCode;
 };
 
 const linkVisitorsToVisit = async (visitors, visitID) => {
