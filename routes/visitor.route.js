@@ -9,7 +9,7 @@ router.post('/addcompany', VisitorController.addCompany)
 router.post('/createvisit', VisitorController.createVisit)
 
 router.get('/all', VisitorController.getVisitors)
-router.get('get-visitors', VisitorController.getVisitorsWithVisitID)
+router.get('/get-visitors', VisitorController.getVisitorsWithVisitID)
 router.get('/getcompanies', VisitorController.getCompanies)
 
 export default router;
