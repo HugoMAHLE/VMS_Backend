@@ -81,6 +81,7 @@ const getAllVisitors = async () => {
 
 const getVisitorsOnVisit = async (id) => {
   try {
+    console.log(id)
     const query = {
       text: `
       SELECT v.* FROM visitors v
@@ -90,7 +91,7 @@ const getVisitorsOnVisit = async (id) => {
     };
 
     const { rows } = await db.query(query);
-
+    console.log(rows)
     return rows || [];
   } catch (error) {
     console.error('Error fetching visitors from the database:', error);
