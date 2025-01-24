@@ -102,7 +102,7 @@ const getVisitors = async (req, res) => {
 };
 
 const getVisitorsWithVisitID = async (req, res) => {
-  const { id } = req.body
+  const { id } = req.query
 
   try {
     const visitors = await VisitorModel.getVisitorsOnVisit(id); // Fetch visitors
