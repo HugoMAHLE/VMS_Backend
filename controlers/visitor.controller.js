@@ -101,6 +101,21 @@ const getVisitors = async (req, res) => {
   }
 };
 
+const getVisitorsWithVisitID = async (req, res) => {
+  const { id } = req.body
+
+  try {
+    const visitors = await VisitorModel.getVisitorsOnVisit(id); // Fetch visitors
+    return res.status(200).json({ ok: true, msg: visitors }); // Send successful response
+  } catch (error) {
+    console.error('Error fetching visitors:', error); // Log error for debugging
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error occurred while fetching visitors', // Provide a more descriptive error message
+    });
+  }
+};
+
 //api/v1/visitor/companies
 const getCompanies = async (req, res) => {
   try {
@@ -120,5 +135,6 @@ export const VisitorController = {
   getVisitors,
   getCompanies,
   addCompany,
-  createVisit
+  createVisit,
+  getVisitorsWithVisitID
 }

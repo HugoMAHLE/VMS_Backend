@@ -79,6 +79,25 @@ const getAllVisitors = async () => {
   }
 };
 
+const getVisitorsOnVisit = async (id) => {
+  try {
+    const query = {
+      text: `
+      SELECT v.* FROM visitors v
+      left join "visitorvisitR" vvr on v."visitorID" = vvr."visitorID"
+      WHERE vvr."visitID" = $1`,
+      values: [id]
+    };
+
+    const { rows } = await db.query(query);
+
+    return rows || [];
+  } catch (error) {
+    console.error('Error fetching visitors from the database:', error);
+    throw new Error('Database query failed');
+  }
+};
+
 const getAllCompanies = async () => {
   try {
     const query = {
@@ -242,7 +261,8 @@ export const VisitorModel = {
   AddCompany,
   FindCompany,
   createVisit,
-  linkVisitorsToVisit
+  linkVisitorsToVisit,
+  getVisitorsOnVisit
 }
 
 
