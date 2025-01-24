@@ -84,7 +84,7 @@ const getVisitorsOnVisit = async (id) => {
     const query = {
       text: `
       SELECT v.* FROM visitors v
-      left join "visitorvisitR" vvr on v."visitorID" = vvr."visitorID"
+      left join "visitorvisitR" vvr on v.visitorid = vvr."visitorID"
       WHERE vvr."visitID" = $1`,
       values: [id]
     };
