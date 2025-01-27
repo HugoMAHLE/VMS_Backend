@@ -5,7 +5,7 @@ const findVisitByCode = async (code) => {
   const query = {
     text: `
     select * from visits
-    where code = $1
+    where code = '$1'
     `,
     values: [code]
   };
