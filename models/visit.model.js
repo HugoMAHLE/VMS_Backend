@@ -1,5 +1,5 @@
 import {db} from '../database/connection.database.js'
-import {edb} from '../database/email.database.js'
+import {sql} from '../database/email.database.js'
 
 const findVisitByCode = async (code) => {
   const query = {
@@ -119,7 +119,7 @@ const sendMailConfirmation = async (code, recipient, name) => {
   };
 
   try {
-    const { rows } = await edb.query(query);
+    const { rows } = await sql.query(query);
     console.log("Query result:", rows); // Check the query result
     if (rows.length === 0) {
       console.log("Error sending code:", code);
