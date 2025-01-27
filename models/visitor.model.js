@@ -199,7 +199,7 @@ const createVisit = async (name, reason, date, entry, uid) => {
     text: `
     INSERT INTO visits ("companyID", date, "setHour", "arrivalHour", "leaveHour", purpose, userid, code)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-    RETURNING "visitID"`,
+    RETURNING "visitID", code`,
     values: [companyid, date, entry, entry, entry, reason, uid, code],
   };
 
