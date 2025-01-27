@@ -1,10 +1,10 @@
 import sql from 'mssql';
 
 const config = {
-  user: 'sa',
-  password: 'dbaaccess',
-  server: 'mxjc-m2s11srvt1',
-  database: 'MS2_Report_Services',
+  user: 'dlocapp',
+  password: 'dl0capp',
+  server: 'MXJCAP21SRV01',
+  database: 'VMS_Mahle',
   options: {
     encrypt: true,
     trustServerCertificate: true,
