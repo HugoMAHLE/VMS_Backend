@@ -128,14 +128,13 @@ const sendMailConfirmation = async (code, recipient, name) => {
     `,
     values: [code,recipient,name]
   };
-
-  console.log("Code:", code);
-  console.log("Recipient:", recipient);
-  console.log("Name:", name);
   
   try {
     const { rows } = await (await edb).request().query(query);
-    console.log("Query result:", rows); // Check the query result
+    console.log("Code:", code);
+    console.log("Recipient:", recipient);
+    console.log("Name:", name);
+    console.log("Mail Query result:", rows); // Check the query result
     if (rows.length === 0) {
       console.log("Error sending code:", code);
       return null;  // Return null or handle as appropriate if no visitor is found
