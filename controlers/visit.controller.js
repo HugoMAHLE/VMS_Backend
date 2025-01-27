@@ -36,7 +36,7 @@ const sendCode = async (req, res) => {
     const userInfo = await VisitModel.findHostById(userID);
 
     const email = userInfo.email;
-    const name = userInfo.firstname;
+    const name = userInfo.firstName;
 
     const response = await VisitModel.sendMailConfirmation(code, email, name);
 
