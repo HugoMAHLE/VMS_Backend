@@ -27,20 +27,7 @@ const findVisitByCode = async (code) => {
 
 const sendMailConfirmation = async (code, recipient, name) => {
   const query = {
-    text: `
-      EXEC sp_addlinkedserver 
-      @server = 'mxjc-m2s11srvt1', 
-      @srvproduct = '', 
-      @provider = 'SQLNCLI', 
-      @datasrc = 'mxjc-m2s11srvt1';
-
-      EXEC sp_addlinkedsrvlogin 
-      @rmtsrvname = 'mxjc-m2s11srvt1', 
-      @locallogin = NULL, 
-      @useself = 'FALSE', 
-      @rmtuser = 'sa', 
-      @rmtpassword = 'dbaaccess';
-      
+    text: `     
 	    DECLARE @mailto AS nvarchar(1000)
       DECLARE @mailprofile AS nvarchar(100)
       DECLARE @mailsubject AS nvarchar(100)
@@ -78,7 +65,7 @@ const sendMailConfirmation = async (code, recipient, name) => {
       N'      <td style="text-align: center; padding: 20px;">' +
       N'        <table class="container" role="presentation" cellpadding="0" cellspacing="0">' +
       N'          <tr>' +
-      N'            <td style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Hi $3,</td>' +
+      N'            <td style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Hi ' + @name + ',</td>' +
       N'          </tr>' +
       N'          <tr>' +
       N'            <td style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">' +
@@ -87,7 +74,7 @@ const sendMailConfirmation = async (code, recipient, name) => {
       N'          </tr>' +
       N'          <tr>' +
       N'            <td class="code">' +
-      N'              $1' +
+      N'              ' + @code + '' +
       N'            </td>' +
       N'          </tr>' +
       N'          <tr>' +
@@ -115,7 +102,7 @@ const sendMailConfirmation = async (code, recipient, name) => {
 
       BEGIN TRY
         EXEC [mxjc-m2s11srvt1].msdb.dbo.sp_send_dbmail
-          @recipients = $2,
+          @recipients = @recipient,
           @profile_name = @mailprofile,
           @subject = @mailsubject,
           @body = @tableHTML,
@@ -125,26 +112,46 @@ const sendMailConfirmation = async (code, recipient, name) => {
       BEGIN CATCH
         SELECT ERROR_MESSAGE() AS Result
       END CATCH
-    `,
-    values: [code,recipient,name]
+    `
   };
-  
+
   try {
-    const { rows } = await (await edb).request().query(query);
-    console.log("Code:", code);
-    console.log("Recipient:", recipient);
-    console.log("Name:", name);
-    console.log("Mail Query result:", rows); // Check the query result
-    if (rows.length === 0) {
-      console.log("Error sending code:", code);
-      return null;  // Return null or handle as appropriate if no visitor is found
+    const result = await edb.request()
+      .input('code', code)
+      .input('recipient', recipient)
+      .input('name', name)
+      .query(query);
+
+    console.log("Query result:", result);
+
+    if (!result || !result.recordset || result.recordset.length === 0) {
+      console.log("No rows returned from query.");
+      return null;
     }
-    console.log("Email Status:", rows[0]);
-    return rows[0];  // Return the first visitor if found
+
+    console.log("Email sent successfully:", result.recordset[0]);
+    return result.recordset[0];
   } catch (error) {
-    console.log("Error executing query:", error);
-    return null;  // Handle the error as needed
+    console.error("Error executing query:", error);
+    return null;
   }
+  
+  // try {
+  //   const { rows } = await (await edb).request().query(query);
+  //   console.log("Code:", code);
+  //   console.log("Recipient:", recipient);
+  //   console.log("Name:", name);
+  //   console.log("Mail Query result:", rows); // Check the query result
+  //   if (rows.length === 0) {
+  //     console.log("Error sending code:", code);
+  //     return null;  // Return null or handle as appropriate if no visitor is found
+  //   }
+  //   console.log("Email Status:", rows[0]);
+  //   return rows[0];  // Return the first visitor if found
+  // } catch (error) {
+  //   console.log("Error executing query:", error);
+  //   return null;  // Handle the error as needed
+  // }
 };
 
 const findHostById = async (id) => {
