@@ -162,7 +162,7 @@ const findVisitorByEmail = async (email) => {
 
   try {
     const { rows } = await db.query(query);
-    console.log("Query result:", rows); // Check the query result
+    console.log("find visitor by email Query result:", rows); // Check the query result
     if (rows.length === 0) {
       console.log("No visitor found with this email:", email);
       return null;  // Return null or handle as appropriate if no visitor is found

@@ -12,7 +12,7 @@ const findVisitByCode = async (code) => {
 
   try {
     const { rows } = await db.query(query);
-    console.log("Query result:", rows); // Check the query result
+    console.log("find visit by id Query result:", rows); // Check the query result
     if (rows.length === 0) {
       console.log("No visit was found with this code:", email);
       return null;  // Return null or handle as appropriate if no visitor is found
@@ -158,7 +158,7 @@ const findHostById = async (id) => {
 
   try {
     const { rows } = await db.query(query);
-    console.log("Query result:", rows); // Check the query result
+    console.log("find host by id Query result:", rows); // Check the query result
     if (rows.length === 0) {
       console.log("No host was found with this id:", id);
       return null;  // Return null or handle as appropriate if no visitor is found
