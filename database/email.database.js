@@ -5,7 +5,7 @@ const {Pool} = pg
 const connectionString = process.env.EMAILDB_URL
 
 
-export const db = new Pool({
+export const edb = new Pool({
   allowExitOnIdle: true,
   connectionString
 })
