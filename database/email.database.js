@@ -11,7 +11,7 @@ export const edb = new Pool({
 })
 
 try {
-  await db.query('SELECT NOW()')
+  await edb.query('SELECT NOW()')
   console.log('Database connected')
 } catch (error) {
   console.log(error)
