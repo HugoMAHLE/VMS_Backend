@@ -50,7 +50,7 @@ const createVisit = async (req, res) => {
       return res.status(500).json({ ok: false, msg: "Failed to link visitors to the visit" });
     }
     const newCode = newVisit[0].code
-    return res.status(201).json({ ok: true, msg: code });
+    return res.status(201).json({ ok: true, msg: newCode });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
