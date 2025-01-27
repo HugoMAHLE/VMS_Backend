@@ -28,7 +28,20 @@ const findVisitByCode = async (code) => {
 const sendMailConfirmation = async (code, recipient, name) => {
   const query = {
     text: `
-      DECLARE @mailto AS nvarchar(1000)
+      EXEC sp_addlinkedserver 
+      @server = 'mxjc-m2s11srvt1', 
+      @srvproduct = '', 
+      @provider = 'SQLNCLI', 
+      @datasrc = 'mxjc-m2s11srvt1';
+
+      EXEC sp_addlinkedsrvlogin 
+      @rmtsrvname = 'mxjc-m2s11srvt1', 
+      @locallogin = NULL, 
+      @useself = 'FALSE', 
+      @rmtuser = 'sa', 
+      @rmtpassword = 'dbaaccess';
+      
+	    DECLARE @mailto AS nvarchar(1000)
       DECLARE @mailprofile AS nvarchar(100)
       DECLARE @mailsubject AS nvarchar(100)
       DECLARE @tableHTML AS NVARCHAR(MAX)   
@@ -101,15 +114,13 @@ const sendMailConfirmation = async (code, recipient, name) => {
       N'</html>'
 
       BEGIN TRY
-        EXEC msdb.dbo.sp_send_dbmail 
-          @recipients = '$2', 
-          @profile_name = @mailprofile, 
-          @subject = @mailsubject, 
-          @body = @tableHTML, 
-          @body_format = 'HTML', 
-          @importance ='HIGH'
-        
-        RETURN 'Success' AS Result
+        EXEC [mxjc-m2s11srvt1].msdb.dbo.sp_send_dbmail
+          @recipients = $2,
+          @profile_name = @mailprofile,
+          @subject = @mailsubject,
+          @body = @tableHTML,
+          @body_format = 'HTML',
+          @importance = 'HIGH'
       END TRY
       BEGIN CATCH
         SELECT ERROR_MESSAGE() AS Result
