@@ -129,6 +129,10 @@ const sendMailConfirmation = async (code, recipient, name) => {
     values: [code,recipient,name]
   };
 
+  console.log("Code:", code);
+  console.log("Recipient:", recipient);
+  console.log("Name:", name);
+  
   try {
     const { rows } = await (await edb).request().query(query);
     console.log("Query result:", rows); // Check the query result
