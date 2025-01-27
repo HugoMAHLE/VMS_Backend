@@ -21,6 +21,36 @@ const getVisit = async (req, res) => {
   }
 };
 
+// api/v1/send-code
+const sendCode = async (req, res) => {
+  const { code } = req.body;
+   
+  try {
+    if (!code) {
+      return res.status(400).json({ ok: false, msg: 'All info is required' });
+    }
+    console.log('Code received:', code);
+    const visit = await VisitModel.findVisitByCode(code);
+    const userID = visit.userid
+
+    const userInfo = await VisitModel.findHostById(userID);
+
+    const email = userInfo.email;
+    const name = userInfo.firstname;
+
+    const response = await VisitModel.sendMailConfirmation(code, email, name);
+
+    return res.status(200).json({ ok: true, msg: response });
+  } catch (error) {
+    console.error('Error fetching visit:', error);
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error occurred while fetching the visit info',
+    });
+  }
+};
+
 export const VisitController = {
-  getVisit
+  getVisit,
+  sendCode
 }
