@@ -9,12 +9,12 @@ const findVisitByCode = async (code) => {
     `,
     values: [code]
   };
-
+  console.log(code)
   try {
     const { rows } = await db.query(query);
-    console.log("find visit by id Query result:", rows); // Check the query result
+    console.log("find visit by code Query result:", rows); // Check the query result
     if (rows.length === 0) {
-      console.log("No visit was found with this code:", email);
+      console.log("No visit was found with this code:", code);
       return null;  // Return null or handle as appropriate if no visitor is found
     }
     console.log("Visit found:", rows[0]);
