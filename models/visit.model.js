@@ -26,50 +26,41 @@ const findVisitByCode = async (code) => {
 };
 
 const sendMailConfirmation = async (code, recipient, name) => {
-  const query = {
-    text: `     
-	    INSERT INTO Mailing (email, host, code, sent)
-      VALUES (@recipient, @name, @code, 0)
-    `
-  };
+  const query = `
+    INSERT INTO Mailing (email, host, code, sent)
+    VALUES (@recipient, @name, @code, 0)
+  `;
 
   try {
-    const result = await edb.request()
-      .input('code', code)
-      .input('recipient', recipient)
-      .input('name', name)
-      .query(query);
+    // Obtener la conexión a la base de datos
+    const pool = await edb;
 
-    console.log("Query result:", result);
+    // Crear una solicitud (request) desde la conexión
+    const request = pool.request();
 
-    if (!result || !result.recordset || result.recordset.length === 0) {
-      console.log("No rows returned from query.");
-      return null;
+    // Asignar los valores a los parámetros
+    request.input('recipient', sql.NVarChar, recipient);
+    request.input('name', sql.NVarChar, name);
+    request.input('code', sql.NVarChar, code);
+
+    // Ejecutar el query
+    const result = await request.query(query);
+
+    console.log("Insert result:", result);
+
+    // Verificar si el INSERT fue exitoso
+    if (result.rowsAffected[0] > 0) {
+      console.log("Email data inserted successfully.");
+      return { success: true, message: "Email data inserted successfully." };
+    } else {
+      console.log("No rows were inserted.");
+      return { success: false, message: "No rows were inserted." };
     }
-
-    console.log("Email sent successfully:", result.recordset[0]);
-    return result.recordset[0];
   } catch (error) {
     console.error("Error executing query:", error);
-    return null;
+    return { success: false, message: "Error executing query: " + error.message };
   }
-  
-  // try {
-  //   const { rows } = await (await edb).request().query(query);
-  //   console.log("Code:", code);
-  //   console.log("Recipient:", recipient);
-  //   console.log("Name:", name);
-  //   console.log("Mail Query result:", rows); // Check the query result
-  //   if (rows.length === 0) {
-  //     console.log("Error sending code:", code);
-  //     return null;  // Return null or handle as appropriate if no visitor is found
-  //   }
-  //   console.log("Email Status:", rows[0]);
-  //   return rows[0];  // Return the first visitor if found
-  // } catch (error) {
-  //   console.log("Error executing query:", error);
-  //   return null;  // Handle the error as needed
-  // }
+
 };
 
 const findHostById = async (id) => {
