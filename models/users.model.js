@@ -63,13 +63,30 @@ const getUID = async(id) => {
   return rows[0]
 }
 
+const getHostVisits = async(userid) => {
+  const query = {
+    text: `
+    SELECT v.date, v."setHour", c.company, COUNT(vvr."vvID") AS visitor_count
+    FROM visits v
+    LEFT JOIN companies c ON v."companyID" = c.id
+    LEFT JOIN "visitorvisitR" vvr ON v."visitID" = vvr."visitID"
+    WHERE v.userid = $1
+    GROUP BY v.date, v."setHour", c.company;
+    `,
+    values: [userid]
+  }
+  const {rows} = await db.query(query)
+  return rows[0]
+}
+
 
 export const UserModel = {
   createUser,
   findOneByEmail,
   findOneById,
   getEmail,
-  getUID
+  getUID,
+  getHostVisits
 };
 
 export default UserModel;

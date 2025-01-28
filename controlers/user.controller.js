@@ -149,10 +149,28 @@ const getUID = async (req, res) => {
   }
 };
 
+// api/v1/users/get-host-vists
+const getHostVisits = async (req, res) => {
+  try {
+    const userid = req.query.userid;  
+    console.log(userid);  
+
+    const hostVisits = await UserModel.getHostVisits(userid);  
+    return res.status(200).json({ ok: true, visits: hostVisits });  
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error server'
+    });
+  }
+};
+
 export const UserController = {
   register,
   login,
   getProfile,
   getEmail,
-  getUID
+  getUID,
+  getHostVisits
 }

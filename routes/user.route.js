@@ -10,6 +10,7 @@ router.post('/login', UserController.login)
 router.get('/profile', verifyToken, UserController.getProfile)
 router.get('/getemail', UserController.getEmail)
 router.get('/getuid', UserController.getUID)
+router.get('/get-host-visits', UserController.getHostVisits)
 
 
 // router.get('/admin-only', verifyUserType("admin"), (req, res) => {
