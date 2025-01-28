@@ -1,5 +1,5 @@
 import {db} from '../database/connection.database.js'
-import {edb} from '../database/email.database.js'
+import {edb, sql} from '../database/email.database.js'
 
 const findVisitByCode = async (code) => {
   const query = {
