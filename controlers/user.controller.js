@@ -155,7 +155,8 @@ const getHostVisits = async (req, res) => {
     const userid = req.query.userid;  
     console.log(userid);  
 
-    const hostVisits = await UserModel.getHostVisits(userid);  
+    const hostVisits = await UserModel.getHostVisits(userid);
+    console.log(hostVisits)
     return res.status(200).json( hostVisits );  
   } catch (error) {
     console.log(error);

@@ -76,7 +76,7 @@ const getHostVisits = async(userid) => {
     values: [userid]
   }
   const {rows} = await db.query(query)
-  return rows[0]
+  return rows;
 }
 
 
