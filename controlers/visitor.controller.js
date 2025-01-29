@@ -130,11 +130,54 @@ const getCompanies = async (req, res) => {
   }
 };
 
+//api/v1/visitor/companie-by-id
+const getCompanyByID = async (req, res) => {
+  const { id } = req.query
+
+  try {
+    const company = await VisitorModel.getCompanyByID(id); // Fetch visitors
+    return res.status(200).json({ company }); // Send successful response
+  } catch (error) {
+    console.error('Error fetching visitors:', error); // Log error for debugging
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error occurred while fetching visitors', // Provide a more descriptive error message
+    });
+  }
+};
+
+// api/v1/visitor/update-status
+const updateStatus = async(req, res) => {
+  try{
+    const { status, visitorid } = req.body
+
+    if(!status || !visitorid){
+      return res.status(400).json({ ok: false, msg: "Missing Data" })
+    }
+
+    const updated = await VisitorModel.updateStatus(status, visitorid, visitid)
+    if(updated) {
+      return res.status(201).json({ok:true})
+    }else{
+      return res.status(400).json({ ok: false, msg: "Error on update" })
+    }
+  }catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error del servidor' + error
+    })
+
+  }
+}
+
 export const VisitorController = {
   createVisitor,
   getVisitors,
   getCompanies,
+  getCompanyByID,
   addCompany,
   createVisit,
-  getVisitorsWithVisitID
+  getVisitorsWithVisitID,
+  updateStatus
 }

@@ -151,6 +151,18 @@ const GetCompanyID = async(company) => {
   return rows[0]
 }
 
+const getCompanyByID = async(id) => {
+  const query = {
+    text: `
+    select company from companies
+    where id = $1
+    `,
+    values: [id]
+  }
+  const {rows} = await db.query(query)
+  return rows[0]
+}
+
 const findVisitorByEmail = async (email) => {
   const query = {
     text: `
@@ -252,6 +264,21 @@ const linkVisitorsToVisit = async (visitors, visitID) => {
   }
 };
 
+const updateStatus = async (status, visitorid, visitid) => {
+
+  const query = {
+    text: `
+    UPDATE "visitorvisitR" 
+    SET "statusID" = (select "statusID" from status s where s.status = $1)
+    where "visitorID" = $2 and "visitID" = $3
+    RETURNING "statusID"`,
+    values: [status, visitorid, visitid],
+  };
+
+  const { rows } = await db.query(query);
+  return rows;
+};
+
 
 export const VisitorModel = {
   createVisitor,
@@ -263,7 +290,9 @@ export const VisitorModel = {
   FindCompany,
   createVisit,
   linkVisitorsToVisit,
-  getVisitorsOnVisit
+  getVisitorsOnVisit,
+  updateStatus,
+  getCompanyByID
 }
 
 

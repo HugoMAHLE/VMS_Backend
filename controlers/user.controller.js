@@ -149,6 +149,23 @@ const getUID = async (req, res) => {
   }
 };
 
+// api/v1/users/get-host-name
+const getHostName = async (req, res) => {
+  try {
+    const id = req.query.id;  // Access the id from the query parameter
+    console.log(id);  // You should now get the id passed in the query
+
+    const user = await UserModel.getHostName(id);  // Use the id to query the database
+    return res.status(200).json({ hostname: user.firstname });  // Send user data back in response
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error server'
+    });
+  }
+};
+
 // api/v1/users/get-host-vists
 const getHostVisits = async (req, res) => {
   try {
@@ -173,5 +190,6 @@ export const UserController = {
   getProfile,
   getEmail,
   getUID,
+  getHostName,
   getHostVisits
 }

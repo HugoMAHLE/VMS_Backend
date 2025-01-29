@@ -63,6 +63,18 @@ const getUID = async(id) => {
   return rows[0]
 }
 
+const getHostName = async(id) => {
+  const query = {
+    text: `
+    select uid from users
+    where userid = $1
+    `,
+    values: [id]
+  }
+  const {rows} = await db.query(query)
+  return rows[0]
+}
+
 const getHostVisits = async(userid) => {
   const query = {
     text: `
@@ -86,7 +98,8 @@ export const UserModel = {
   findOneById,
   getEmail,
   getUID,
-  getHostVisits
+  getHostVisits,
+  getHostName
 };
 
 export default UserModel;
