@@ -66,8 +66,8 @@ const getUID = async(id) => {
 const getHostName = async(id) => {
   const query = {
     text: `
-    select uid from users
-    where userid = $1
+    select CONCAT ("fistName", ' ', "lastName") full_name;  from users
+    where uid = $1
     `,
     values: [id]
   }
