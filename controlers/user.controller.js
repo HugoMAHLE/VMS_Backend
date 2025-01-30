@@ -157,7 +157,7 @@ const getHostName = async (req, res) => {
 
     const user = await UserModel.getHostName(id);  // Use the id to query the database
     console.log(user)
-    return res.status(200).json({ hostname: user.firstname });  // Send user data back in response
+    return res.status(200).json({ user });  // Send user data back in response
   } catch (error) {
     console.log(error);
     return res.status(500).json({

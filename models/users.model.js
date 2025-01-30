@@ -63,13 +63,14 @@ const getUID = async(id) => {
   return rows[0]
 }
 
-const getHostName = async(id) => {
+const getHostName = async(uid) => {
   const query = {
     text: `
-    select CONCAT ("fistName", ' ', "lastName") full_name;  from users
-    where uid = $1
+    SELECT CONCAT(u."firstName", ' ', u."lastName") AS full_name
+    FROM users u
+    WHERE u.uid = $1
     `,
-    values: [id]
+    values: [uid]
   }
   const {rows} = await db.query(query)
   return rows[0]
