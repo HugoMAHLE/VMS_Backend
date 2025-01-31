@@ -224,7 +224,7 @@ const createVisitCode = (date) => {
 
   const year = visitDate.getFullYear().toString().slice(-2); // Last 2 digits of the year
   const month = String(visitDate.getMonth() + 1).padStart(2, '0'); // Month (01-12)
-  const day = String(visitDate.getDay()).padStart(2, '0'); // Day (01-31)
+  const day = String(visitDate.getDate()).padStart(2, '0'); // Day (01-31)
 
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, '0'); // Hours (00-23)
