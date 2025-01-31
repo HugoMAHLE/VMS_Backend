@@ -170,7 +170,7 @@ const getHostName = async (req, res) => {
 // api/v1/users/get-host-vists
 const getHostVisits = async (req, res) => {
   try {
-    const userid = req.query;  
+    const userid = req.query.userid;  
     console.log(userid);  
 
     const hostVisits = await UserModel.getHostVisits(userid);
