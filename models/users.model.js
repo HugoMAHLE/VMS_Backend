@@ -83,7 +83,7 @@ const getHostVisits = async(userid) => {
     FROM visits v
     LEFT JOIN companies c ON v."companyID" = c.id
     LEFT JOIN "visitorvisitR" vvr ON v."visitID" = vvr."visitID"
-    WHERE v.userid = $1
+    WHERE v.userid = (SELECT uid FROM users WHERE userid = $1)
     GROUP BY v.date, v."setHour", c.company;
     `,
     values: [userid]
