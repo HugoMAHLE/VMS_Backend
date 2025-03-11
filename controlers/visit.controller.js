@@ -25,14 +25,16 @@ const getVisit = async (req, res) => {
 //api/v1/recep-visits
 const getRecepVisit = async (req, res) => {
   const { plant } = req.body;
-
+  console.log("reached checkpoint 1");
   try{
     if (!plant) {
+      console.log("reached checkpoint 2");
       return res.status(400).json({ ok: false, msg: 'All info is required' });
     }
     console.log('plant received:', plant);
 
     const response = await VisitModel.getRecepVisit(plant)
+    console.log("reached chackpoint 3");
     return res.status(200).json({ ok: true, msg: response });
 
   }catch(error){
