@@ -14,6 +14,7 @@ const createUser = async({userid, email, pass, utype}) => {
   return rows[0]
 }
 
+
 const findOneByEmail = async(email) => {
   const query = {
     text: `
@@ -25,6 +26,7 @@ const findOneByEmail = async(email) => {
   const {rows} = await db.query(query)
   return rows[0]
 }
+
 
 const findOneById = async(userid) => {
   const query = {
@@ -39,6 +41,7 @@ const findOneById = async(userid) => {
   return rows[0]
 }
 
+
 const getEmail = async(id) => {
   const query = {
     text: `
@@ -50,6 +53,7 @@ const getEmail = async(id) => {
   const {rows} = await db.query(query)
   return rows[0]
 }
+
 
 const getUID = async(id) => {
   const query = {
@@ -63,6 +67,7 @@ const getUID = async(id) => {
   return rows[0]
 }
 
+
 const getHostName = async(uid) => {
   const query = {
     text: `
@@ -75,6 +80,7 @@ const getHostName = async(uid) => {
   const {rows} = await db.query(query)
   return rows[0]
 }
+
 
 const getHostVisits = async(userid) => {
   const query = {

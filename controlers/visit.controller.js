@@ -1,5 +1,6 @@
 import { VisitModel } from "../models/visit.model.js";
 import jwt from 'jsonwebtoken'
+import { VisitorModel } from "../models/visitor.model.js";
 
 // api/v1/get-visit-info
 const getVisit = async (req, res) => {
@@ -32,13 +33,25 @@ const sendCode = async (req, res) => {
     console.log('Code received:', code);
     const visit = await VisitModel.findVisitByCode(code);
     const userID = visit.userid
+    const visitID = visit.visitID
 
     const userInfo = await VisitModel.findHostById(userID);
 
     const email = userInfo.email;
     const name = userInfo.firstName;
 
-    const response = await VisitModel.sendMailConfirmation(code, email, name);
+    const mailingArray = await VisitorModel.getVisitorsOnVisit(visitID);
+
+    for (const element of mailingArray) {
+      const type = "guest";
+      const vName = element.firstname + " " + element.lastname;
+      const vEmail = element.email
+
+      VisitModel.sendMailConfirmation(code, vEmail, vName, type);
+
+    }
+
+    const response = await VisitModel.sendMailConfirmation(code, email, name, "host");
 
     return res.status(200).json({ ok: true, msg: response });
   } catch (error) {

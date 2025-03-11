@@ -25,10 +25,10 @@ const findVisitByCode = async (code) => {
   }
 };
 
-const sendMailConfirmation = async (code, recipient, name) => {
+const sendMailConfirmation = async (code, recipient, name, rol) => {
   const query = `
-    INSERT INTO Mailing (email, host, code, sent)
-    VALUES (@recipient, @name, @code, 0)
+    INSERT INTO Mailing (email, host, code, sent, rol)
+    VALUES (@recipient, @name, @code, 0, @rol)
   `;
 
   try {
@@ -42,6 +42,7 @@ const sendMailConfirmation = async (code, recipient, name) => {
     request.input('recipient', sql.NVarChar, recipient);
     request.input('name', sql.NVarChar, name);
     request.input('code', sql.NVarChar, code);
+    request.input('rol', sql.NVarChar, rol)
 
     // Ejecutar el query
     const result = await request.query(query);
