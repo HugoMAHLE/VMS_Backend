@@ -22,6 +22,28 @@ const getVisit = async (req, res) => {
   }
 };
 
+//api/v1/recep-visits
+const getRecepVisit = async (req, res) => {
+  const { plant } = req.body;
+
+  try{
+    if (!plant) {
+      return res.status(400).json({ ok: false, msg: 'All info is required' });
+    }
+    console.log('plant received:', plant);
+
+    const response = await VisitModel.getRecepVisit(plant)
+    return res.status(200).json({ ok: true, msg: response });
+
+  }catch(error){
+    console.error('Error fetching visit:', error);
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error occurred while fetching the visits info',
+    });
+  }
+};
+
 // api/v1/send-code
 const sendCode = async (req, res) => {
   const { code } = req.body;
@@ -65,5 +87,6 @@ const sendCode = async (req, res) => {
 
 export const VisitController = {
   getVisit,
-  sendCode
+  sendCode,
+  getRecepVisit
 }
