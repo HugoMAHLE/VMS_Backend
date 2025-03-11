@@ -24,7 +24,7 @@ const getVisit = async (req, res) => {
 
 //api/v1/recep-visits
 const getRecepVisit = async (req, res) => {
-  const { plant } = req.body;
+  const { plant } = req.query;
   console.log("reached checkpoint 1");
   try{
     if (!plant) {
