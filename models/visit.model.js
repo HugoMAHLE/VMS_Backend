@@ -113,7 +113,7 @@ const getRecepVisit = async (plant) => {
       return null;  // Return null or handle as appropriate if no visitor is found
     }
     console.log("visits found:", rows[0]);
-    return rows[0];  // Return the first visitor if found
+    return rows;  // Return the whole table of visits
   } catch (error) {
     console.log("Error executing query:", error);
     return null;  // Handle the error as needed
