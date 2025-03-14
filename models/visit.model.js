@@ -95,7 +95,7 @@ const getRecepVisit = async (plant) => {
       c.company, 
       COUNT(vvr."visitorID") AS guests, 
       v."setHour", 
-      v.date
+      v.date,
       v.code
     FROM visits v
     LEFT JOIN companies c ON v."companyID" = c.id
