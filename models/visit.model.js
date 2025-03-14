@@ -101,7 +101,7 @@ const getRecepVisit = async (plant) => {
     LEFT JOIN companies c ON v."companyID" = c.id
     LEFT JOIN "visitorvisitR" vvr ON v."visitID" = vvr."visitID"
     WHERE v."plantID" = $1
-    GROUP BY c.company, v."setHour", v.date;
+    GROUP BY c.company, v."setHour", v.date, v.code;
     `,
     values: [plant]
   }
