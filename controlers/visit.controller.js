@@ -46,6 +46,30 @@ const getRecepVisit = async (req, res) => {
   }
 };
 
+//api/v1/rec-guests
+const getVisitGuests = async (req, res) => {
+  const { code } = req.query;
+  console.log("reached checkpoint 1");
+  try{
+    if (!code) {
+      console.log("reached checkpoint 2");
+      return res.status(400).json({ ok: false, msg: 'A code is required' });
+    }
+    console.log('code received:', code);
+
+    const response = await VisitModel.getVisitGuests(code)
+    console.log("reached chackpoint 3");
+    return res.status(200).json({ ok: true, msg: response });
+
+  }catch(error){
+    console.error('Error fetching guests:', error);
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error occurred while fetching the guests',
+    });
+  }
+};
+
 // api/v1/send-code
 const sendCode = async (req, res) => {
   const { code } = req.body;
@@ -90,5 +114,6 @@ const sendCode = async (req, res) => {
 export const VisitController = {
   getVisit,
   sendCode,
-  getRecepVisit
+  getRecepVisit,
+  getVisitGuests
 }

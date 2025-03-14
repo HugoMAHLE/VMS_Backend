@@ -95,7 +95,8 @@ const getRecepVisit = async (plant) => {
       c.company, 
       COUNT(vvr."visitorID") AS guests, 
       v."setHour", 
-      v.date 
+      v.date
+      v.code
     FROM visits v
     LEFT JOIN companies c ON v."companyID" = c.id
     LEFT JOIN "visitorvisitR" vvr ON v."visitID" = vvr."visitID"
@@ -112,7 +113,33 @@ const getRecepVisit = async (plant) => {
       console.log("No visits found with this plant:", plant);
       return null;  // Return null or handle as appropriate if no visitor is found
     }
-    console.log("visits found:", rows[0]);
+    console.log("visits found:", rows);
+    return rows;  // Return the whole table of visits
+  } catch (error) {
+    console.log("Error executing query:", error);
+    return null;  // Handle the error as needed
+  }
+}
+
+const getVisitGuests = async (code) => {
+  const query = {
+    text: `
+    select * 
+    from visitors v 
+    left join "visitorvisitR" vr on vr."visitorID" = v.visitorid
+    where vr."visitID" = $1 ;
+    `,
+    values: [code]
+  }
+
+  try {
+    const { rows } = await db.query(query);
+    //console.log("find host by id Query result:", rows); // Check the query result
+    if (rows.length === 0) {
+      console.log("No guests found for this Visit code:", code);
+      return null;  // Return null or handle as appropriate if no visitor is found
+    }
+    console.log("guests found:", rows);
     return rows;  // Return the whole table of visits
   } catch (error) {
     console.log("Error executing query:", error);
@@ -124,7 +151,8 @@ export const VisitModel = {
   findVisitByCode,
   sendMailConfirmation,
   findHostById,
-  getRecepVisit
+  getRecepVisit,
+  getVisitGuests
 }
 
 
