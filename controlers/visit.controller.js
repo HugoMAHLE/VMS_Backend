@@ -57,8 +57,8 @@ const getVisitGuests = async (req, res) => {
     }
     console.log('code received:', code);
 
-    const visitID = await VisitModel.findVisitByCode(code)
-    const response = await VisitModel.getVisitGuests(visitID)
+    const visit = await VisitModel.findVisitByCode(code)
+    const response = await VisitModel.getVisitGuests(visit.visitID)
     console.log("reached chackpoint 3");
     return res.status(200).json({ ok: true, msg: response });
 
