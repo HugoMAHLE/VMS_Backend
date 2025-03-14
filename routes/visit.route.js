@@ -9,4 +9,6 @@ router.get('/get-visit-info', VisitController.getVisit)
 
 router.get('/recep-visits', VisitController.getRecepVisit)
 
+router.get('/rec-guests', VisitController.getVisitGuests)
+
 export default router;

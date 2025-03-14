@@ -34,7 +34,7 @@ const getRecepVisit = async (req, res) => {
     console.log('plant received:', plant);
 
     const response = await VisitModel.getRecepVisit(plant)
-    console.log("reached chackpoint 3");
+    console.log("reached checkpoint 3: " + response);
     return res.status(200).json({ ok: true, msg: response });
 
   }catch(error){
