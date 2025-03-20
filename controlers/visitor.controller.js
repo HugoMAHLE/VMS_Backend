@@ -171,6 +171,31 @@ const updateStatus = async(req, res) => {
   }
 }
 
+// api/v1/visitor/get-visitor-status
+const getVisitorStatus = async(req, res) => {
+  try{
+    const { status, visitorid, visitid } = req.query
+
+    if(!status || !visitorid || !visitid){
+      return res.status(400).json({ ok: false, msg: "Missing Data" })
+    }
+
+    const updated = await VisitorModel.getVisitorStatus(status, visitorid, visitid)
+    if(updated) {
+      return res.status(201).json({ok:true})
+    }else{
+      return res.status(400).json({ ok: false, msg: "Error on update" })
+    }
+  }catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error del servidor' + error
+    })
+
+  }
+}
+
 export const VisitorController = {
   createVisitor,
   getVisitors,
@@ -179,5 +204,6 @@ export const VisitorController = {
   addCompany,
   createVisit,
   getVisitorsWithVisitID,
-  updateStatus
+  updateStatus,
+  getVisitorStatus
 }

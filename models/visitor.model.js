@@ -1,8 +1,8 @@
 import {db} from '../database/connection.database.js'
 
-const createVisitor = async ({ fname, lname, email, phone, company }) => {
+const createVisitor = async ({type,  fname, lname, email, phone, company }) => {
   console.log("Starting createVisitor function...");
-  console.log("Received data:", { fname, lname, email, phone, company });
+  console.log("Received data:", { type, fname, lname, email, phone, company });
 
   const client = await db.connect();
   try {
@@ -36,11 +36,11 @@ const createVisitor = async ({ fname, lname, email, phone, company }) => {
 
     const visitorQuery = {
       text: `
-        INSERT INTO visitors (firstName, lastName, email, phone, companyid)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO visitors (type, firstName, lastName, email, phone, companyid)
+        VALUES ($1, $2, $3, $4, $5, 6$)
         RETURNING email
       `,
-      values: [fname, lname, email, phone, companyId],
+      values: [type, fname, lname, email, phone, companyId],
     };
     console.log("Inserting visitor with query:", visitorQuery);
 
