@@ -7,7 +7,7 @@ const createVisitor = async(req, res) => {
   try{
     const {fname, lname, email, phone, company} = req.body
 
-    if(!fname || !lname || !email || !phone || !company){
+    if(!type || !fname || !lname || !email || !phone || !company){
       return res.status(400).json({ ok: false, msg: "Missing Data" })
     }
 
@@ -16,7 +16,7 @@ const createVisitor = async(req, res) => {
       return res.status(409).json({ ok: false, msg: "Visitor already exist" })
     }
 
-    const newvisitor = await VisitorModel.createVisitor({fname,lname, email, phone, company})
+    const newvisitor = await VisitorModel.createVisitor({type, fname,lname, email, phone, company})
     return res.status(201).json({ok:true})
 
   }catch (error) {

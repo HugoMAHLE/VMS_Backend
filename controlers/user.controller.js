@@ -7,9 +7,9 @@ import jwt from 'jsonwebtoken'
 const register = async(req, res) => {
   try{
     console.log(3)
-    const {userid, email, pass} = req.body
+    const {userid, firstname, lastname, plant, email, pass} = req.body
 
-    if(!userid || !email || !pass){
+    if(!userid || !firstname || !lastname || !plant || !email || !pass){
       return res.status(400).json({ ok: false, msg: "Missing Data" })
     }
 
@@ -21,7 +21,7 @@ const register = async(req, res) => {
     const salt = await bcryptjs.genSalt(10)
     const hashpass = await bcryptjs.hash(pass, salt)
 
-    const newUser = await UserModel.createUser({userid, email, pass: hashpass, utype:2})
+    const newUser = await UserModel.createUser({userid, firstname, lastname, plant, email, pass: hashpass, utype:2})
 
     const token = jwt.sign(
       { email: newUser.email },
