@@ -18,7 +18,7 @@ const findVisitByCode = async (code) => {
       return null;  // Return null or handle as appropriate if no visitor is found
     }
     console.log("Visit found:", rows[0]);
-    return rows[0];  // Return the first visitor if found
+    return rows[0];  // Return the first visit if found
   } catch (error) {
     console.log("Error executing query:", error);
     return null;  // Handle the error as needed
