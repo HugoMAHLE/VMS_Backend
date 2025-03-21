@@ -5,6 +5,7 @@ import visitorRouter from './routes/visitor.route.js'
 import emailRouter from './routes/email.route.js';
 import visitRouter from './routes/visit.route.js'
 import cors from "cors"
+import './global.js'
 
 const app = express();
 
@@ -30,8 +31,6 @@ app.get('/', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-
-//app.listen(PORT, () => console.log('Servidor corriendo en puerto: ' + PORT))
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log('Servidor corriendo en puerto: ' + PORT);

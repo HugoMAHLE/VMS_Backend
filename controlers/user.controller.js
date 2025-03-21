@@ -2,20 +2,21 @@ import { UserModel } from "../models/users.model.js";
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-
 // api/v1/users/register
 const register = async(req, res) => {
   try{
-    console.log(3)
+    logger.saveLog("Registration request received", "register", "Debug")
     const {userid, firstname, lastname, plant, email, pass} = req.body
 
     if(!userid || !firstname || !lastname || !plant || !email || !pass){
+      logger.saveLog("Missing Data", "register", "Debug")
       return res.status(400).json({ ok: false, msg: "Missing Data" })
     }
 
     const user = await UserModel.findOneByEmail(email)
     if(user) {
-      return res.status(409).json({ ok: false, msg: "User already exist" })
+      logger.saveLog("User not created: already exists", "register", "Debug")
+      return res.status(409).json({ ok: false, msg: "User already exists" })
     }
 
     const salt = await bcryptjs.genSalt(10)
@@ -29,10 +30,11 @@ const register = async(req, res) => {
       { expiresIn:  "1h" }
     )
 
+    logger.saveLog("User created", "register", "Debug")
     return res.status(201).json({ok:true, token: token})
 
   }catch (error) {
-    console.log(error)
+    logger.saveLog("Error:" + error, "register", "Error")
     return res.status(500).json({
       ok: false,
       msg: 'Error del servidor' + error
