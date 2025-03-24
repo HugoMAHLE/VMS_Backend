@@ -1,18 +1,17 @@
+import fs from 'fs';  
 import { fileURLToPath } from 'url';
 import path from 'path';
-import fs from 'fs';
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const getLogFilePath = () => {
     const today = new Date().toISOString().split('T')[0]; // Obtiene YYYY-MM-DD
-    return path.join(__dirname, `../logs/${today}.log`);
+    return { path: path.join(__dirname, `../logs/${today}.log`), today };
 };
 
 const saveLog = (msg, module = 'GENERAL', level = 'INFO') => {
-    const logFilePath = getLogFilePath(); // Obtiene el archivo del día
+    const { path: logFilePath, today } = getLogFilePath(); // Ahora today está disponible
     const time = new Date().toLocaleTimeString(); // Obtiene la hora HH:MM:SS
     const logEntry = `[${time}] [${level}] [${module}] ${msg}\n`;
 
