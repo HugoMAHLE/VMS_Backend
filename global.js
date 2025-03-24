@@ -1,3 +1,3 @@
-import { logger } from './middlewares/log.middleware.js';
+import { saveLog } from './middlewares/log.middleware.js';
 
-global.logger = logger;
+global.logger = saveLog;
