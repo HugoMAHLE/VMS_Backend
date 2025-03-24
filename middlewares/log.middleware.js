@@ -26,4 +26,4 @@ const saveLog = (msg, module = 'GENERAL', level = 'INFO') => {
     }
 };
 
-export { saveLog };
+export { saveLog as logger };
