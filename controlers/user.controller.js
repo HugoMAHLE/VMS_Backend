@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 const register = async(req, res) => {
   try{
     console.log("register called")
-    logger.saveLog("Registration request received", "register", "Debug")
+    logger("Registration request received", "register", "Debug")
     const {userid, firstname, lastname, plant, email, pass} = req.body
 
     if(!userid || !firstname || !lastname || !plant || !email || !pass){
@@ -16,7 +16,7 @@ const register = async(req, res) => {
 
     const user = await UserModel.findOneByEmail(email)
     if(user) {
-      logger.saveLog("User not created: already exists", "register", "Debug")
+      logger("User not created: already exists", "register", "Debug")
       return res.status(409).json({ ok: false, msg: "User already exists" })
     }
 
@@ -31,11 +31,11 @@ const register = async(req, res) => {
       { expiresIn:  "1h" }
     )
 
-    logger.saveLog("User created", "register", "Debug")
+    logger("User created", "register", "Debug")
     return res.status(201).json({ok:true, token: token})
 
   }catch (error) {
-    logger.saveLog("Error:" + error, "register", "Error")
+    logger("Error:" + error, "register", "Error")
     return res.status(500).json({
       ok: false,
       msg: 'Error del servidor' + error
