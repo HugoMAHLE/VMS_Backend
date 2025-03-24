@@ -167,13 +167,14 @@ const getVisitorsWithVisitID = async (req, res) => {
 //api/v1/visitor/companies
 const getCompanies = async (req, res) => {
   try {
-    const companies = await VisitorModel.getAllCompanies(); // Fetch visitors
+    logger("Companies requested", "getCompanies 1", "Debug" );
+    const companies = await VisitorModel.getAllCompanies(); // Fetch Companies
     return res.status(200).json({ ok: true, msg: companies }); // Send successful response
   } catch (error) {
-    console.error('Error fetching companies:', error); // Log error for debugging
+    logger("Error fetching companies", "getCompanies", "Error" );
     return res.status(500).json({
       ok: false,
-      msg: 'Error occurred while fetching companies', // Provide a more descriptive error message
+      msg: 'Error occurred while fetching companies', // Provide error message
     });
   }
 };
@@ -189,7 +190,7 @@ const getCompanyByID = async (req, res) => {
     console.error('Error fetching visitors:', error); // Log error for debugging
     return res.status(500).json({
       ok: false,
-      msg: 'Error occurred while fetching visitors', // Provide a more descriptive error message
+      msg: 'Error occurred while fetching visitors', // Provide error message
     });
   }
 };
