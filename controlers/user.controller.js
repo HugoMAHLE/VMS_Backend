@@ -9,7 +9,7 @@ const register = async(req, res) => {
     const {userid, firstname, lastname, plant, email, pass} = req.body
 
     if(!userid || !firstname || !lastname || !plant || !email || !pass){
-      logger("Missing Data", "register", "Debug")
+      logger("Missing Data: " + req.body , "register", "Debug")
       return res.status(400).json({ ok: false, msg: "Missing Data" })
     }
 

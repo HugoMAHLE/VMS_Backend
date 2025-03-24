@@ -21,7 +21,7 @@ const saveLog = (msg, module = 'GENERAL', level = 'INFO') => {
         }
 
         if (!fs.existsSync(logFilePath)) {
-            fs.writeFileSync(logFilePath, `=== LOG ${today} ===\n`, 'utf8');
+            fs.writeFileSync(logFilePath, `=== LOG ${today} ===\r\r\n`, 'utf8');
         }
 
         fs.appendFileSync(logFilePath, logEntry);
