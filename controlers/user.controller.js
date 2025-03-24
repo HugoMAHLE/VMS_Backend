@@ -22,7 +22,15 @@ const register = async(req, res) => {
     const salt = await bcryptjs.genSalt(10)
     const hashpass = await bcryptjs.hash(pass, salt)
 
-    const newUser = await UserModel.createUser({userid, firstname, lastname, plant, email, pass: hashpass, utype:2})
+    const newUser = await UserModel.createUser({
+      userid, 
+      firstname, 
+      lastname, 
+      plant, 
+      email, 
+      pass: hashpass, 
+      utype:2
+    })
 
     const token = jwt.sign(
       { email: newUser.email },
@@ -34,7 +42,7 @@ const register = async(req, res) => {
     return res.status(201).json({ok:true, token: token})
 
   }catch (error) {
-    logger("Error:" + error, "register", "Error")
+    logger( error, "register", "Error")
     return res.status(500).json({
       ok: false,
       msg: 'Error del servidor' + error
