@@ -1,65 +1,95 @@
-import {db} from '../database/connection.database.js'
+// const createVisitor = async ({type,  fname, lname, email, phone, company }) => {
 
-const createVisitor = async ({type,  fname, lname, email, phone, company }) => {
-  console.log("Starting createVisitor function...");
-  console.log("Received data:", { type, fname, lname, email, phone, company });
+//   const client = await db.connect();
+//   try {
+//     await client.query('BEGIN');
 
-  const client = await db.connect();
-  try {
-    console.log("Database connection established. Beginning transaction...");
-    await client.query('BEGIN');
+//     const companyQuery = {
+//       text: `SELECT id FROM companies WHERE company = $1`,
+//       values: [company],
+//     };
+//     console.log("Checking if company exists with query:", companyQuery);
 
-    const companyQuery = {
-      text: `SELECT id FROM companies WHERE company = $1`,
-      values: [company],
-    };
-    console.log("Checking if company exists with query:", companyQuery);
+//     const companyResult = await client.query(companyQuery);
+//     console.log("Company query result:", companyResult.rows);
 
-    const companyResult = await client.query(companyQuery);
-    console.log("Company query result:", companyResult.rows);
+//     let companyId;
+//     if (companyResult.rows.length > 0) {
+//       companyId = companyResult.rows[0].id;
+//       console.log("Company exists. Using company ID:", companyId);
+//     } else {
+//       const insertCompanyQuery = {
+//         text: `INSERT INTO companies (company) VALUES ($1) RETURNING id`,
+//         values: [company],
+//       };
+//       console.log("Inserting new company with query:", insertCompanyQuery);
 
-    let companyId;
-    if (companyResult.rows.length > 0) {
-      companyId = companyResult.rows[0].id;
-      console.log("Company exists. Using company ID:", companyId);
-    } else {
-      const insertCompanyQuery = {
-        text: `INSERT INTO companies (company) VALUES ($1) RETURNING id`,
-        values: [company],
-      };
-      console.log("Inserting new company with query:", insertCompanyQuery);
+//       const insertCompanyResult = await client.query(insertCompanyQuery);
+//       companyId = insertCompanyResult.rows[0].id;
+//       console.log("New company inserted. Company ID:", companyId);
+//     }
 
-      const insertCompanyResult = await client.query(insertCompanyQuery);
-      companyId = insertCompanyResult.rows[0].id;
-      console.log("New company inserted. Company ID:", companyId);
-    }
+//     const visitorQuery = {
+//       text: `
+//         INSERT INTO visitors (type, firstName, lastName, email, phone, companyid)
+//         VALUES ($1, $2, $3, $4, $5, 6$)
+//         RETURNING email
+//       `,
+//       values: [type, fname, lname, email, phone, companyId],
+//     };
+//     console.log("Inserting visitor with query:", visitorQuery);
 
-    const visitorQuery = {
-      text: `
-        INSERT INTO visitors (type, firstName, lastName, email, phone, companyid)
-        VALUES ($1, $2, $3, $4, $5, 6$)
-        RETURNING email
-      `,
-      values: [type, fname, lname, email, phone, companyId],
-    };
-    console.log("Inserting visitor with query:", visitorQuery);
+//     const visitorResult = await client.query(visitorQuery);
+//     console.log("Visitor insertion successful. Result:", visitorResult.rows);
 
-    const visitorResult = await client.query(visitorQuery);
-    console.log("Visitor insertion successful. Result:", visitorResult.rows);
+//     await client.query('COMMIT');
+//     console.log("Transaction committed successfully.");
 
-    await client.query('COMMIT');
-    console.log("Transaction committed successfully.");
+//     return visitorResult.rows[0];
+//   } catch (error) {
+//     console.error("Error occurred. Rolling back transaction...");
+//     await client.query('ROLLBACK');
+//     console.error("Error details:", error);
+//     throw error;
+//   } finally {
+//     client.release();
+//     console.log("Database connection released.");
+//   }
+// };
 
-    return visitorResult.rows[0];
-  } catch (error) {
-    console.error("Error occurred. Rolling back transaction...");
-    await client.query('ROLLBACK');
-    console.error("Error details:", error);
-    throw error;
-  } finally {
-    client.release();
-    console.log("Database connection released.");
-  }
+// Consulta para buscar una empresa por su nombre.
+// Se puede pasar un client para incluirla en una transacción.
+const findCompanyByName = async (company, client = db) => {
+  const query = {
+    text: 'SELECT id FROM companies WHERE company = $1',
+    values: [company],
+  };
+  const result = await client.query(query);
+  return result.rows[0];
+};
+
+// Inserta una nueva empresa y retorna su id.
+const createCompany = async (company, client) => {
+  const query = {
+    text: 'INSERT INTO companies (company) VALUES ($1) RETURNING id',
+    values: [company],
+  };
+  const result = await client.query(query);
+  return result.rows[0];
+};
+
+// Inserta un visitante utilizando el id de la empresa.
+const insertVisitor = async ({ type, fname, lname, email, phone, companyId }, client) => {
+  const query = {
+    text: `
+      INSERT INTO visitors (type, firstName, lastName, email, phone, companyid)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING email
+    `,
+    values: [type, fname, lname, email, phone, companyId],
+  };
+  const result = await client.query(query);
+  return result.rows[0];
 };
 
 const getAllVisitors = async () => {
@@ -292,7 +322,10 @@ export const VisitorModel = {
   linkVisitorsToVisit,
   getVisitorsOnVisit,
   updateStatus,
-  getCompanyByID
+  getCompanyByID,
+  createCompany,
+  insertVisitor,
+  findCompanyByName
 }
 
 

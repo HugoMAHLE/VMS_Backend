@@ -3,31 +3,79 @@ import jwt from 'jsonwebtoken'
 
 
 // api/v1/visitor/create
-const createVisitor = async(req, res) => {
-  try{
-    const {fname, lname, email, phone, company} = req.body
+const createVisitor = async (req, res) => {
+  try {
+    const { type, fname, lname, email, phone, company } = req.body;
+    logger("create visitor request", "createVisitor 1", "Debug" );
 
-    if(!type || !fname || !lname || !email || !phone || !company){
-      return res.status(400).json({ ok: false, msg: "Missing Data" })
+    if (!type || !fname || !lname || !email || !phone || !company) {
+      logger("Missed Data", "createVisitor 2", "Debug" );
+      return res.status(400).json({ ok: false, msg: "Missing Data" });
     }
 
-    const visitor = await VisitorModel.findVisitorByEmail(email)
-    if(visitor) {
-      return res.status(409).json({ ok: false, msg: "Visitor already exist" })
+    const existingVisitor = await VisitorModel.findVisitorByEmail(email);
+    if (existingVisitor) {
+      logger("Visitor exists", "createVisitor 3", "Debug" );
+      return res.status(409).json({ ok: false, msg: "Visitor already exist" });
     }
 
-    const newvisitor = await VisitorModel.createVisitor({type, fname,lname, email, phone, company})
-    return res.status(201).json({ok:true})
+    const client = await db.connect();
+    try {
+      await client.query('BEGIN');
 
-  }catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      ok: false,
-      msg: 'Error del servidor' + error
-    })
+      let companyRecord = await VisitorModel.findCompanyByName(company, client);
+      let companyId;
+      if (companyRecord) {
+        companyId = companyRecord.id;
+      } else {
+        const newCompany = await VisitorModel.createCompany(company, client);
+        companyId = newCompany.id;
+      }
 
+      logger("creating Visitor", "createVisitor 4", "Debug" );
+      await VisitorModel.insertVisitor({ type, fname, lname, email, phone, companyId }, client);
+      logger("insert success", "createVisitor 5", "Debug" );
+
+      await client.query('COMMIT');
+      return res.status(201).json({ ok: true });
+    } catch (error) {
+      logger("Error occurred. Rolling back transaction... " + error, "createVisitor", "Error" );
+      await client.query('ROLLBACK');
+      return res.status(500).json({ ok: false, msg: 'Transaction error: ' + error });
+    } finally {
+      logger("create success", "createVisitor 6", "Debug" );
+      client.release();
+    }
+  } catch (error) {
+    logger("Server error: "  + error, "createVisitor ", "Error" );
+    return res.status(500).json({ ok: false, msg: 'Error del servidor: ' + error });
   }
-}
+};
+// const createVisitor = async(req, res) => {
+//   try{
+//     const {type, fname, lname, email, phone, company} = req.body
+
+//     if(!type || !fname || !lname || !email || !phone || !company){
+//       return res.status(400).json({ ok: false, msg: "Missing Data" })
+//     }
+
+//     const visitor = await VisitorModel.findVisitorByEmail(email)
+//     if(visitor) {
+//       return res.status(409).json({ ok: false, msg: "Visitor already exist" })
+//     }
+
+//     const newvisitor = await VisitorModel.createVisitor({type, fname,lname, email, phone, company})
+//     return res.status(201).json({ok:true})
+
+//   }catch (error) {
+//     console.log(error)
+//     return res.status(500).json({
+//       ok: false,
+//       msg: 'Error del servidor' + error
+//     })
+
+//   }
+// }
 
 // api/v1/visitor/createvisit
 const createVisit = async (req, res) => {

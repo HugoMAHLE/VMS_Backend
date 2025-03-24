@@ -1,4 +1,3 @@
-import {db} from '../database/connection.database.js'
 
 const createUser = async({userid, firstName, lastName, plant, email, pass, utype}) => {
   const query = {
