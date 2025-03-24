@@ -3,7 +3,7 @@ import {db} from '../database/connection.database.js'
 const createUser = async({userid, firstName, lastName, plant, email, pass, utype}) => {
   const query = {
     text: `
-      insert into users (userid, email, pass, utype, firstName, lastName, plant)
+      insert into users (userid, email, pass, utype, "firstName", "lastName", plant)
       values ($1, $2, $3, $4, $5, $6, $7)
       returning userid
     `,
