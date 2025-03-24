@@ -56,7 +56,7 @@ const login = async (req, res) => {
   try {
 
     const { userid, pass } = req.body;
-    logger("Received login request:" + userid + " - " + pass, "login 1", "Debug" );
+    logger("Received login request: " + userid + " - " + pass, "login 1", "Debug" );
     if (!userid || !pass) {
       logger("Missing Data || User: " + userid + " pass: " + pass, "login 2", "Debug" );
       return res.status(400).json({ ok: false, msg: "Missing Data" });
