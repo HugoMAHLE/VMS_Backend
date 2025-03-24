@@ -56,23 +56,23 @@ const login = async (req, res) => {
   try {
 
     const { userid, pass } = req.body;
-    console.log("Received login request:", { userid, pass });
+    logger("Received login request:" + userid + " - " + pass, "login 1", "Debug" );
     if (!userid || !pass) {
-      console.log("Missing userid or pass");
+      logger("Missing Data || User: " + userid + " pass: " + pass, "login 2", "Debug" );
       return res.status(400).json({ ok: false, msg: "Missing Data" });
     }
 
     const user = await UserModel.findOneById(userid);
-    console.log(user)
+    logger("user found: " + user , "login 3", "Debug" );
     if (!user) {
-      console.log("User not found");
+      logger("user not found", "login 4", "Debug" );
       return res.status(404).json({ ok: false, msg: "User does not exist" });
     }
 
     const isMatch = await bcryptjs.compare(pass, user.pass);
     console.log(isMatch)
     if (!isMatch) {
-      console.log("Password does not match");
+      logger("Incorrect password", "login 5", "Debug" );
       return res.status(401).json({ ok: false, msg: "Password is incorrect" });
     }
 
@@ -96,7 +96,7 @@ const login = async (req, res) => {
         expiresIn = "1h";
     }
 
-    console.log("Creating token with payload:", { id: user.id, type: user.type }); // Log the token payload
+    logger("Creating token", "login 3", "Debug" ); // Log the token payload
     const token = jwt.sign(
       { userid: user.userid, type: user.type },
       process.env.JWT_SECRET,
@@ -106,7 +106,7 @@ const login = async (req, res) => {
     return res.json({ ok: true, token: token, type: userType, userid: userid  });
 
   } catch (error) {
-    console.log(error);
+    logger(error, "login", "Error" );
     return res.status(500).json({
       ok: false,
       msg: "Server error",
