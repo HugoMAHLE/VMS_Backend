@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 // api/v1/users/register
 const register = async(req, res) => {
   try{
+    console.log("register called")
     logger.saveLog("Registration request received", "register", "Debug")
     const {userid, firstname, lastname, plant, email, pass} = req.body
 
