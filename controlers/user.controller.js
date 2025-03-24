@@ -5,12 +5,11 @@ import jwt from 'jsonwebtoken'
 // api/v1/users/register
 const register = async(req, res) => {
   try{
-    console.log("register called")
     logger("Registration request received", "register", "Debug")
     const {userid, firstname, lastname, plant, email, pass} = req.body
 
     if(!userid || !firstname || !lastname || !plant || !email || !pass){
-      logger.saveLog("Missing Data", "register", "Debug")
+      logger("Missing Data", "register", "Debug")
       return res.status(400).json({ ok: false, msg: "Missing Data" })
     }
 

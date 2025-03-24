@@ -13,7 +13,7 @@ const getLogFilePath = () => {
 const saveLog = (msg, module = 'GENERAL', level = 'INFO') => {
     const { path: logFilePath, today } = getLogFilePath(); // Ahora today está disponible
     const time = new Date().toLocaleTimeString(); // Obtiene la hora HH:MM:SS
-    const logEntry = `[${time}] [${level}] [${module}] ${msg}\n`;
+    const logEntry = `[${time}] [${level}] [${module}] ${msg}\r\n`;
 
     try {
         if (!fs.existsSync(path.dirname(logFilePath))) {
