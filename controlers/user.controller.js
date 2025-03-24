@@ -6,9 +6,9 @@ import jwt from 'jsonwebtoken'
 const register = async(req, res) => {
   try{
     logger("Registration request received", "register", "Debug")
-    const {userid, firstname, lastname, plant, email, pass} = req.body
+    const {userid, firstName, lastName, plant, email, pass} = req.body
 
-    if(!userid || !firstname || !lastname || !plant || !email || !pass){
+    if(!userid || !firstName || !lastName || !plant || !email || !pass){
       logger("Missing Data: " + req.body , "register", "Debug")
       return res.status(400).json({ ok: false, msg: "Missing Data" })
     }
@@ -24,8 +24,8 @@ const register = async(req, res) => {
 
     const newUser = await UserModel.createUser({
       userid, 
-      firstname, 
-      lastname, 
+      firstName, 
+      lastName, 
       plant, 
       email, 
       pass: hashpass, 
