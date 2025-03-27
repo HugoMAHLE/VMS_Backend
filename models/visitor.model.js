@@ -311,7 +311,6 @@ const updateStatus = async (status, visitorid, visitid) => {
 
 
 export const VisitorModel = {
-  createVisitor,
   findVisitorByEmail,
   getAllVisitors,
   findVisitorsByCompany,

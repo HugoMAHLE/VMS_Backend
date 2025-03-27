@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "debug": "node --inspect=0.0.0.0:9229 index.js",
+    "debug-brk": "node --inspect-brk=0.0.0.0:9229 index.js"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,5 @@
+=== LOG 2025-03-27 ===
+[3:05:56 PM] [Debug] [login 1] Received login request: 32032730 - password
+[3:05:56 PM] [Debug] [login 3] user found: [object Object]
+[3:05:57 PM] [Debug] [login 3] Creating token
+[3:05:58 PM] [Debug] [getHostVisits] se recibio request
