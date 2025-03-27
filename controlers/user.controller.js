@@ -181,7 +181,7 @@ const getHostName = async (req, res) => {
 const getHostVisits = async (req, res) => {
   try {
     const userid = req.query.userid;  
-    console.log(userid);  
+    logger('se recibio request', 'getHostVisits', 'Debug')  
 
     const hostVisits = await UserModel.getHostVisits(userid);
     console.log(hostVisits)
