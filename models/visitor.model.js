@@ -79,15 +79,16 @@ const createCompany = async (company, client) => {
 };
 
 // Inserta un visitante utilizando el id de la empresa.
-const insertVisitor = async ({ type, fname, lname, email, phone, companyId }, client) => {
+const insertVisitor = async ( type, fname, lname, email, phone, companyId, client) => {
   const query = {
     text: `
-      INSERT INTO visitors (type, firstName, lastName, email, phone, companyid)
+      INSERT INTO visitors (visitortype, firstName, lastName, email, phone, companyid)
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING email
     `,
     values: [type, fname, lname, email, phone, companyId],
   };
+  logger("inserting with query: " + query.values, "insertVisitor", "DEBUG")
   const result = await client.query(query);
   return result.rows[0];
 };

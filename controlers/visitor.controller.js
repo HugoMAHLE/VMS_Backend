@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 const createVisitor = async (req, res) => {
   try {
     const { type, fname, lname, email, phone, company } = req.body;
-    logger("create visitor request", "createVisitor 1", "Debug" );
+    logger("request: " + type, "createVisitor 1", "Debug" );
 
     if (!type || !fname || !lname || !email || !phone || !company) {
       logger("Missed Data", "createVisitor 2", "Debug" );
@@ -33,7 +33,7 @@ const createVisitor = async (req, res) => {
       }
 
       logger("creating Visitor", "createVisitor 4", "Debug" );
-      await VisitorModel.insertVisitor({ type, fname, lname, email, phone, companyId }, client);
+      await VisitorModel.insertVisitor(type, fname, lname, email, phone, companyId, client);
       logger("insert success", "createVisitor 5", "Debug" );
 
       await client.query('COMMIT');
