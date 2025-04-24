@@ -1,4 +1,5 @@
 import { VisitorModel } from "../models/visitor.model.js";
+import { UserModel } from "../models/users.model.js";
 import jwt from 'jsonwebtoken'
 
 
@@ -86,7 +87,8 @@ const createVisit = async (req, res) => {
       return res.status(400).json({ ok: false, msg: "Missing Data" });
     }
 
-    const newVisit = await VisitorModel.createVisit(name, reason, date, entry, uid);
+    const plant = await UserModel.getHostPlant(uid);
+    const newVisit = await VisitorModel.createVisit(name, reason, date, entry, uid, plant);
 
     if (!newVisit) {
       return res.status(500).json({ ok: false, msg: "Failed to create visit" });

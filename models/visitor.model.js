@@ -232,7 +232,7 @@ const findVisitorsByCompany = async(company) => {
   return rows
 }
 
-const createVisit = async (name, reason, date, entry, uid) => {
+const createVisit = async (name, reason, date, entry, uid, plant) => {
   const response = await GetCompanyID(name);
   const companyid = response.id
   console.log("company: " + companyid)
@@ -240,10 +240,10 @@ const createVisit = async (name, reason, date, entry, uid) => {
 
   const query = {
     text: `
-    INSERT INTO visits ("companyID", date, "setHour", "arrivalHour", "leaveHour", purpose, userid, code)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    INSERT INTO visits ("companyID", date, "setHour", "arrivalHour", "leaveHour", purpose, userid, code, "plantID")
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
     RETURNING "visitID", code`,
-    values: [companyid, date, entry, entry, entry, reason, uid, code],
+    values: [companyid, date, entry, entry, entry, reason, uid, code, plant],
   };
 
   const { rows } = await db.query(query);
