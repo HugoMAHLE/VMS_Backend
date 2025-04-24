@@ -139,7 +139,7 @@ const getAllCompanies = async () => {
 
     return rows.map(row => row.company) || [];
   } catch (error) {
-    console.error('Error fetching companies from the database:', error);
+    logger("Error fetching companies from the database: " + error, "getAllCompanies", "Error" );
     throw new Error('Database query failed');
   }
 };
@@ -237,13 +237,14 @@ const createVisit = async (name, reason, date, entry, uid, plant) => {
   const companyid = response.id
   console.log("company: " + companyid)
   const code = createVisitCode(date)
+  logger("plant received: " + plant, "CreateVisit", "Debug" );
 
   const query = {
     text: `
     INSERT INTO visits ("companyID", date, "setHour", "arrivalHour", "leaveHour", purpose, userid, code, "plantID")
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
     RETURNING "visitID", code`,
-    values: [companyid, date, entry, entry, entry, reason, uid, code, plant],
+    values: [companyid, date, entry, entry, entry, reason, uid, code, parseInt(plant)],
   };
 
   const { rows } = await db.query(query);
