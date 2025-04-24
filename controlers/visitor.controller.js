@@ -87,7 +87,8 @@ const createVisit = async (req, res) => {
       return res.status(400).json({ ok: false, msg: "Missing Data" });
     }
 
-    const plant = await UserModel.getHostPlant(uid);
+    const response = await UserModel.getHostPlant(uid);
+    const plant = response.plant;
     const newVisit = await VisitorModel.createVisit(name, reason, date, entry, uid, plant);
 
     if (!newVisit) {
