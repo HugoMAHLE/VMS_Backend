@@ -313,7 +313,11 @@ const updateStatus = async (status, visitorid, visitid) => {
 
 const countries = async() => {
   const query = {
-    text: 'SELECT id, citizenchip FROM citizenship'
+    text: `
+    SELECT id, citizenchip 
+    FROM citizenship
+    ORDER BY id ASC
+    `
   }
 
   const { rows } = await db.query(query);
