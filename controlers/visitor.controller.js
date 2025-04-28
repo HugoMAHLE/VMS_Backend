@@ -244,15 +244,28 @@ const getVisitorStatus = async(req, res) => {
       ok: false,
       msg: 'Error del servidor' + error
     })
-
   }
 }
+
+//  api/v1/visitor/countries
+const getCountries = async(req, res) => {
+  try{
+    const countries = await VisitorModel.countries(); 
+    res.json(countries)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Error retreiving countries.' })
+  }
+}
+
+module.exports = VisitorController;
 
 export const VisitorController = {
   createVisitor,
   getVisitors,
   getCompanies,
   getCompanyByID,
+  getCountries,
   addCompany,
   createVisit,
   getVisitorsWithVisitID,

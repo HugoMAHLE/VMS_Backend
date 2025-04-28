@@ -11,6 +11,7 @@ router.post('/update-status', VisitorController.updateStatus)
 
 router.get('/all', VisitorController.getVisitors)
 router.get('/get-visitors', VisitorController.getVisitorsWithVisitID)
+router.get('/get-countries', VisitorController.getCountries)
 router.get('/getcompanies', VisitorController.getCompanies)
 router.get('/company-by-id', VisitorController.getCompanyByID)
 

@@ -311,8 +311,18 @@ const updateStatus = async (status, visitorid, visitid) => {
   return rows;
 };
 
+const countries = async() => {
+  const query = {
+    text: 'SELECT id, citizenchip FROM citizenship'
+  }
+
+  const { rows } = await db.query(query);
+  return rows;
+}
+
 
 export const VisitorModel = {
+  countries,
   findVisitorByEmail,
   getAllVisitors,
   findVisitorsByCompany,
