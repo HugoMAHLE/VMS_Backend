@@ -258,8 +258,6 @@ const getCountries = async(req, res) => {
   }
 }
 
-module.exports = VisitorController;
-
 export const VisitorController = {
   createVisitor,
   getVisitors,
