@@ -79,14 +79,14 @@ const createCompany = async (company, client) => {
 };
 
 // Inserta un visitante utilizando el id de la empresa.
-const insertVisitor = async ( type, fname, lname, email, phone, companyId, client) => {
+const insertVisitor = async ( type, fname, lname, email, phone, companyId, client, citizenshipid) => {
   const query = {
     text: `
-      INSERT INTO visitors (visitortype, firstName, lastName, email, phone, companyid)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO visitors (visitortype, firstName, lastName, email, phone, companyid, citizenshipid)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING email
     `,
-    values: [type, fname, lname, email, phone, companyId],
+    values: [type, fname, lname, email, phone, companyId, citizenshipid],
   };
   logger("inserting with query: " + query.values, "insertVisitor", "DEBUG")
   const result = await client.query(query);
@@ -314,7 +314,7 @@ const updateStatus = async (status, visitorid, visitid) => {
 const countries = async() => {
   const query = {
     text: `
-    SELECT id, citizenchip 
+    SELECT id, citizenship 
     FROM citizenship
     ORDER BY id ASC
     `

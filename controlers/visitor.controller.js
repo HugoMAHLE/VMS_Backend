@@ -6,13 +6,16 @@ import jwt from 'jsonwebtoken'
 // api/v1/visitor/create
 const createVisitor = async (req, res) => {
   try {
-    const { type, fname, lname, email, phone, company } = req.body;
-    logger("request: " + type, "createVisitor 1", "Debug" );
+    const { type, fname, lname, email, phone, company, citizenship } = req.body;
+    logger("request: " + citizenship, "createVisitor 1", "Debug" );
+    console.log("request: " + citizenship, "createVisitor 1", "Debug" );
 
-    if (!type || !fname || !lname || !email || !phone || !company) {
+    if (!type || !fname || !lname || !email || !phone || !company || !citizenship) {
       logger("Missed Data", "createVisitor 2", "Debug" );
       return res.status(400).json({ ok: false, msg: "Missing Data" });
     }
+
+    const citizenshipid = parseInt(citizenship)
 
     const existingVisitor = await VisitorModel.findVisitorByEmail(email);
     if (existingVisitor) {
@@ -34,7 +37,8 @@ const createVisitor = async (req, res) => {
       }
 
       logger("creating Visitor", "createVisitor 4", "Debug" );
-      await VisitorModel.insertVisitor(type, fname, lname, email, phone, companyId, client);
+      console.log("creating Visitor ", citizenshipid, "createVisitor 4", "Debug" );
+      await VisitorModel.insertVisitor(type, fname, lname, email, phone, companyId, client, citizenshipid);
       logger("insert success", "createVisitor 5", "Debug" );
 
       await client.query('COMMIT');
@@ -249,8 +253,10 @@ const getVisitorStatus = async(req, res) => {
 
 //  api/v1/visitor/countries
 const getCountries = async(req, res) => {
+  console.log("Reqiuested")
   try{
-    const countries = await VisitorModel.countries(); 
+    const countries = await VisitorModel.countries();
+    console.log(countries) 
     res.json(countries)
   } catch (error) {
     console.error(error)
