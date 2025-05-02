@@ -110,6 +110,26 @@ const getAllVisitors = async () => {
   }
 };
 
+const getVisitorByID = async (visitorid) => {
+  try {
+    const query = {
+      text: `
+        SELECT v.*, c.company FROM visitors v
+        left Join companies c
+        on v.companyid = c.id
+        WHERE v.visitorid = $1
+      `,
+      values: [visitorid],
+    };
+    const { rows } = await db.query(query);
+
+    return rows[0] || [];
+  } catch (error) {
+    console.error('Error fetching visitors from the database:', error);
+    throw new Error('Database query failed');
+  }
+};
+
 const getVisitorsOnVisit = async (id) => {
   try {
     console.log(id)
@@ -194,6 +214,18 @@ const getCompanyByID = async(id) => {
   return rows[0]
 }
 
+const getCountryByID = async(id) => {
+  const query = {
+    text: `
+    select * from citizenship
+    where id = $1
+    `,
+    values: [id]
+  }
+  const {rows} = await db.query(query)
+  return rows[0]
+}
+
 const findVisitorByEmail = async (email) => {
   const query = {
     text: `
@@ -205,7 +237,7 @@ const findVisitorByEmail = async (email) => {
 
   try {
     const { rows } = await db.query(query);
-    console.log("find visitor by email Query result:", rows); // Check the query result
+    console.log("find visitor by email Query result:", rows[0]); // Check the query result
     if (rows.length === 0) {
       console.log("No visitor found with this email:", email);
       return null;  // Return null or handle as appropriate if no visitor is found
@@ -297,18 +329,82 @@ const linkVisitorsToVisit = async (visitors, visitID) => {
 };
 
 const updateStatus = async (status, visitorid, visitid) => {
+  console.log(`got request ${status}, ${visitorid}, ${visitid}`)
 
   const query = {
     text: `
-    UPDATE "visitorvisitR" 
-    SET "statusID" = (select "statusID" from status s where s.status = $1)
-    where "visitorID" = $2 and "visitID" = $3
-    RETURNING "statusID"`,
+      UPDATE "visitorvisitR" 
+      SET "statusID" = $1
+      where "visitorID" = $2 and "visitID" = $3
+      RETURNING "statusID"`,
     values: [status, visitorid, visitid],
   };
 
   const { rows } = await db.query(query);
   return rows;
+};
+
+const updateMigration = async (migrationNbr, visitorid) => {
+  console.log(`got request ${migrationNbr}, ${visitorid}}`)
+
+  const query = {
+    text: `
+      UPDATE "visitors" 
+      SET "migrationNbr" = $1
+      where visitorid = $2
+      RETURNING "migrationNbr"`,
+    values: [migrationNbr, visitorid],
+  };
+
+  const { rows } = await db.query(query);
+  return rows;
+};
+
+const getMigration = async (visitorid) => {
+  console.log(`got request ${visitorid}}`)
+
+  const query = {
+    text: `
+      SELECT *
+      FROM "visitors" 
+      where visitorid = $2
+    `,
+    values: [visitorid],
+  };
+
+  const { rows } = await db.query(query);
+  return rows[0];
+};
+
+
+const printStatus = async (visitorid, visitid) => {
+
+  const query = {
+    text: `
+      UPDATE "visitorvisitR" 
+      SET printed = 1
+      where "visitorID" = $1 and "visitID" = $2
+      RETURNING printed`,
+    values: [visitorid, visitid],
+  };
+
+  const { rows } = await db.query(query);
+  return rows;
+};
+
+const getVisitorStatus = async (visitorid, visitid) => {
+
+  const query = {
+    text: `
+      SELECT "statusID", printed
+      FROM "visitorvisitR" 
+      where "visitorID" = $1 and "visitID" = $2
+    `,
+    values: [visitorid, visitid],
+  };
+
+  const { rows } = await db.query(query);
+  return rows[0];
 };
 
 const countries = async() => {
@@ -328,19 +424,25 @@ const countries = async() => {
 export const VisitorModel = {
   countries,
   findVisitorByEmail,
-  getAllVisitors,
   findVisitorsByCompany,
-  getAllCompanies,
-  AddCompany,
+  findCompanyByName,
   FindCompany,
-  createVisit,
-  linkVisitorsToVisit,
-  getVisitorsOnVisit,
-  updateStatus,
   getCompanyByID,
+  getAllVisitors,
+  getVisitorsOnVisit,
+  getVisitorStatus,
+  getAllCompanies,
+  getCountryByID,
+  getVisitorByID,
+  getMigration,
+  AddCompany,
   createCompany,
   insertVisitor,
-  findCompanyByName
+  createVisit,
+  linkVisitorsToVisit,
+  updateStatus,
+  updateMigration,
+  printStatus,
 }
 
 

@@ -1,5 +1,0 @@
-[10:50:09 AM] [Debug] [createVisitor 1] request: New hire
-[10:50:09 AM] [Debug] [createVisitor 4] creating Visitor
-[10:50:09 AM] [DEBUG] [insertVisitor] inserting with query: New hire,p,p,pe@g.com,12345678,3
-[10:50:09 AM] [Error] [createVisitor] Error occurred. Rolling back transaction... error: column "visitortype" of relation "visitors" does not exist
-[10:50:09 AM] [Debug] [createVisitor 6] create success

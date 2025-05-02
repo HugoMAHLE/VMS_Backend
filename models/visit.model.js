@@ -10,7 +10,6 @@ const findVisitByCode = async (code) => {
   console.log(code)
   try {
     const { rows } = await db.query(query);
-    console.log("find visit by code Query result:", rows); // Check the query result
     if (rows.length === 0) {
       console.log("No visit was found with this code:", code);
       return null;  // Return null or handle as appropriate if no visitor is found

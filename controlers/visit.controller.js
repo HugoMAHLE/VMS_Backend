@@ -1,17 +1,17 @@
 import { VisitModel } from "../models/visit.model.js";
-import jwt from 'jsonwebtoken'
 import { VisitorModel } from "../models/visitor.model.js";
 
 // api/v1/get-visit-info
 const getVisit = async (req, res) => {
   const { code } = req.query;
-   
+     
   try {
     if (!code) {
       return res.status(400).json({ ok: false, msg: 'Visit code is required' });
     }
-    console.log('Code received:', code);
+    
     const visit = await VisitModel.findVisitByCode(code);
+    console.log("Visit ifnformation soun=d: " + visit.visitID)
     return res.status(200).json({ ok: true, msg: visit });
   } catch (error) {
     console.error('Error fetching visit:', error);

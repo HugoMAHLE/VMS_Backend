@@ -82,6 +82,13 @@ const createVisitor = async (req, res) => {
 //   }
 // }
 
+const getVisitorByEmail = async (req, res) => {
+  const { email } = req.query;
+  const visitor = await VisitorModel.findVisitorByEmail(email);
+  console.log("request found for visitor: " + visitor)
+  return res.status(201).json(visitor);
+}
+
 // api/v1/visitor/createvisit
 const createVisit = async (req, res) => {
   try {
@@ -202,43 +209,156 @@ const getCompanyByID = async (req, res) => {
   }
 };
 
-// api/v1/visitor/update-status
-const updateStatus = async(req, res) => {
-  try{
-    const { status, visitorid } = req.body
+//api/v1/visitor/get-country
+const getCitizenshipByVisitorID = async (req, res) => {
+  const { visitorid } = req.query
+  try {
+    const visitor = await VisitorModel.getVisitorByID(visitorid);
+    const citizenshipID = visitor.citizenshipid
+    const citizenship = await VisitorModel.getCountryByID(citizenshipID); // Fetch visitors
+    return res.status(200).json( citizenship ); // Send successful response
+  } catch (error) {
+    console.error('Error fetching visitor with id: ' + visitorid , error); // Log error for debugging
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error occurred while fetching visitors', // Provide error message
+    });
+  }
+};
 
-    if(!status || !visitorid){
+// api/v1/visitor/update-status
+// const updateVisitorStatus = async(req, res) => {
+//   try{
+//     const { status, visitorid } = req.body
+
+//     if(!status || !visitorid){
+//       return res.status(400).json({ ok: false, msg: "Missing Data" })
+//     }
+
+//     const updated = await VisitorModel.updateStatus(status, visitorid, visitid)
+//     if(updated) {
+//       return res.status(201).json({ok:true})
+//     }else{
+//       return res.status(400).json({ ok: false, msg: "Error on update" })
+//     }
+//   }catch (error) {
+//     console.log(error)
+//     return res.status(500).json({
+//       ok: false,
+//       msg: 'Error del servidor' + error
+//     })
+
+//   }
+// }
+
+const updateVisitorStatus = async(req, res) => {
+  try{
+    const { statusid, visitorid, visitid } = req.body 
+    console.log(`requested update: ${statusid}, ${visitorid}, ${visitid}`)
+
+    if(!statusid || !visitorid || !visitid){ 
       return res.status(400).json({ ok: false, msg: "Missing Data" })
     }
 
-    const updated = await VisitorModel.updateStatus(status, visitorid, visitid)
-    if(updated) {
+    const updated = await VisitorModel.updateStatus(statusid, visitorid, visitid)
+    if(updated && updated.length > 0) { 
       return res.status(201).json({ok:true})
-    }else{
+    } else {
       return res.status(400).json({ ok: false, msg: "Error on update" })
     }
-  }catch (error) {
+  } catch (error) {
     console.log(error)
     return res.status(500).json({
       ok: false,
-      msg: 'Error del servidor' + error
+      msg: 'Error del servidor: ' + error
     })
-
   }
 }
+
+const updateVisitorMigration = async(req, res) => {
+  try{
+    const { migrationNbr, visitorid } = req.body 
+    console.log(`requested update: ${visitorid}, ${migrationNbr}`)
+
+    if( !visitorid || !migrationNbr){ 
+      return res.status(400).json({ ok: false, msg: "Missing Data" })
+    }
+
+    const updated = await VisitorModel.updateMigration(migrationNbr, visitorid)
+    if(updated && updated.length > 0) { 
+      return res.status(201).json({ok:true})
+    } else {
+      return res.status(400).json({ ok: false, msg: "Error on update" })
+    }
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error del servidor: ' + error
+    })
+  }
+}
+
+const getVisitorMigration = async(req, res) => {
+  try{
+    const { visitorid } = req.body 
+    console.log(`requested update: ${visitorid}`)
+
+    if( !visitorid ){ 
+      return res.status(400).json({ ok: false, msg: "Missing Data" })
+    }
+
+    const visitor = await VisitorModel.getMigration(visitorid)
+    if(visitor) { 
+      return res.status(201).json(visitor)
+    } else {
+      return res.status(400).json({ ok: false, msg: "Error on update" })
+    }
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error del servidor: ' + error
+    })
+  }
+}
+
+const updateLabelPrintStatus = async(req, res) => {
+  try{
+    const { visitorid, visitid } = req.body 
+
+    if( !visitorid || !visitid){ 
+      return res.status(400).json({ ok: false, msg: "Missing Data" })
+    }
+
+    const updated = await VisitorModel.printStatus( visitorid, visitid)
+    if(updated && updated.length > 0) { 
+      return res.status(201).json({ok:true})
+    } else {
+      return res.status(400).json({ ok: false, msg: "Error on update" })
+    }
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error del servidor: ' + error
+    })
+  }
+}
+
 
 // api/v1/visitor/get-visitor-status
 const getVisitorStatus = async(req, res) => {
   try{
-    const { status, visitorid, visitid } = req.query
+    const { visitorid, visitid } = req.query
 
-    if(!status || !visitorid || !visitid){
+    if( !visitorid || !visitid){
       return res.status(400).json({ ok: false, msg: "Missing Data" })
     }
 
-    const updated = await VisitorModel.getVisitorStatus(status, visitorid, visitid)
-    if(updated) {
-      return res.status(201).json({ok:true})
+    const response = await VisitorModel.getVisitorStatus(visitorid, visitid)
+    if(response != null) {
+      return res.status(201).json(response)
     }else{
       return res.status(400).json({ ok: false, msg: "Error on update" })
     }
@@ -267,12 +387,17 @@ const getCountries = async(req, res) => {
 export const VisitorController = {
   createVisitor,
   getVisitors,
+  getVisitorByEmail,
   getCompanies,
   getCompanyByID,
+  getCitizenshipByVisitorID,
   getCountries,
+  getVisitorMigration,
   addCompany,
   createVisit,
   getVisitorsWithVisitID,
-  updateStatus,
-  getVisitorStatus
+  getVisitorStatus,
+  updateVisitorStatus,
+  updateLabelPrintStatus,
+  updateVisitorMigration,
 }
