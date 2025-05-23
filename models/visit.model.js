@@ -29,24 +29,20 @@ const sendMailConfirmation = async (code, recipient, name, rol) => {
   `;
 
   try {
-    // Obtener la conexión a la base de datos
     const pool = await edb;
 
-    // Crear una solicitud (request) desde la conexión
     const request = pool.request();
 
-    // Asignar los valores a los parámetros
     request.input('recipient', sql.NVarChar, recipient);
     request.input('name', sql.NVarChar, name);
     request.input('code', sql.NVarChar, code);
     request.input('rol', sql.NVarChar, rol)
 
-    // Ejecutar el query
+
     const result = await request.query(query);
 
     console.log("Insert result:", result);
 
-    // Verificar si el INSERT fue exitoso
     if (result.rowsAffected[0] > 0) {
       console.log("Email data inserted successfully.");
       return { success: true, message: "Email data inserted successfully." };

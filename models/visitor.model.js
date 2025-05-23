@@ -300,10 +300,10 @@ const createVisitCode = (date) => {
 };
 
 const linkVisitorsToVisit = async (visitors, visitID) => {
-  const status = 3
+  const status = 1
   const queryText = `
-    INSERT INTO "visitorvisitR" ("visitID", "visitorID", "statusID")
-    VALUES ($1, $2, $3)
+    INSERT INTO "visitorvisitR" ("visitID", "visitorID", "statusID", printed)
+    VALUES ($1, $2, $3, 0)
   `;
 
   // Use a transaction to ensure all inserts succeed or roll back
