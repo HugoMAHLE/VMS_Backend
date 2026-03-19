@@ -1,11 +1,11 @@
-import 'dotenv/config';
-import express, { urlencoded } from 'express';
-import userRouter from './routes/user.route.js'
-import visitorRouter from './routes/visitor.route.js'
-import emailRouter from './routes/email.route.js';
-import visitRouter from './routes/visit.route.js'
-import cors from "cors"
-import './global.js'
+require('dotenv').config();
+const express = require('express');
+const userRouter = require('./routes/user.route.js');
+const visitorRouter = require('./routes/visitor.route.js');
+const emailRouter = require('./routes/email.route.js');
+const visitRouter = require('./routes/visit.route.js');
+const cors = require('cors');
+require('./global.js');
 
 const app = express();
 
