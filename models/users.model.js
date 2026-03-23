@@ -111,6 +111,22 @@ const getHostVisits = async(userid) => {
 }
 
 
+const updatePassword = async(email, newPassword) => {
+  const query = {
+    text: `
+    UPDATE users
+    SET pass = $2
+    WHERE email = $1
+    RETURNING userid
+    `,
+    values: [email, newPassword]
+  }
+
+  const {rows} = await db.query(query)
+  return rows[0]
+}
+
+
 export const UserModel = {
   createUser,
   findOneByEmail,
@@ -120,6 +136,7 @@ export const UserModel = {
   getHostVisits,
   getHostName,
   getHostPlant,
+  updatePassword,
 };
 
 export default UserModel;

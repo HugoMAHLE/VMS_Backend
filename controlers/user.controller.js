@@ -195,6 +195,41 @@ const getHostVisits = async (req, res) => {
   }
 };
 
+// api/v1/users/restart-password
+const restartPassword = async(req, res) => {
+  try{
+    logger("Password restart request received", "restartPassword", "Debug")
+    const {email, pass} = req.body
+
+    if(!email || !pass){
+      logger("Missing Data: " + req.body , "restartPassword", "Debug")
+      return res.status(400).json({ ok: false, msg: "Missing Data" })
+    }
+
+    const user = await UserModel.findOneByEmail(email)
+    if(!user) {
+      logger("User not found for password restart", "restartPassword", "Debug")
+      return res.status(404).json({ ok: false, msg: "User not found" })
+    }
+
+    const salt = await bcryptjs.genSalt(10)
+    const hashpass = await bcryptjs.hash(pass, salt)
+
+    await UserModel.updatePassword(email, hashpass)
+
+    logger("Password updated successfully", "restartPassword", "Debug")
+    return res.status(200).json({ok:true, msg: "Password updated successfully"})
+
+  }catch (error) {
+    logger( error, "restartPassword", "Error")
+    return res.status(500).json({
+      ok: false,
+      msg: 'Error del servidor' + error
+    })
+
+  }
+}
+
 export const UserController = {
   register,
   login,
@@ -202,5 +237,6 @@ export const UserController = {
   getEmail,
   getUID,
   getHostName,
-  getHostVisits
+  getHostVisits,
+  restartPassword
 }

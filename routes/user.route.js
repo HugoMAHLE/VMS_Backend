@@ -6,6 +6,7 @@ const router = Router()
 
 router.post('/Register', UserController.register)
 router.post('/login', UserController.login)
+router.post('/restart-password', UserController.restartPassword)
 
 router.get('/profile', verifyToken, UserController.getProfile)
 router.get('/getemail', UserController.getEmail)
