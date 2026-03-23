@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { VisitorController } from "../controlers/visitor.controller.js";
-import { verifyToken } from "../middlewares/jwt.middleware.js";
+const { Router } = require("express");
+const { VisitorController } = require("../controlers/visitor.controller.js");
+const { verifyToken } = require("../middlewares/jwt.middleware.js");
 
 const router = Router()
 
@@ -22,4 +22,4 @@ router.put('/update-migration', VisitorController.updateVisitorMigration)
 router.put('/update-status', VisitorController.updateVisitorStatus)
 router.put('/update-print', VisitorController.updateLabelPrintStatus)
 
-export default router;
+module.exports = router;

@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import nodemailer from 'nodemailer';
+const { Router } = require('express');
+const nodemailer = require('nodemailer');
 
 const emailRouter = Router();
 
@@ -35,4 +35,4 @@ emailRouter.post('/send', async (req, res) => {
   }
 });
 
-export default emailRouter;  
+module.exports = emailRouter;  

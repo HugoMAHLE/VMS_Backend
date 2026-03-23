@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
-export const verifyUserType = (requiredType) => {
+const verifyUserType = (requiredType) => {
   return (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1];
 
@@ -22,3 +22,5 @@ export const verifyUserType = (requiredType) => {
     }
   };
 };
+
+module.exports = { verifyUserType };

@@ -1,7 +1,6 @@
-import jwt from 'jsonwebtoken'
+const jwt = require('jsonwebtoken')
 
-export const verifyToken = (req, res, next) => {
-
+const verifyToken = (req, res, next) => {
   let token = req.headers.authorization
 
   if(!token){
@@ -18,3 +17,5 @@ export const verifyToken = (req, res, next) => {
     return res.status(400).json({error: "Invalid Token"})
   }
 }
+
+module.exports = { verifyToken };

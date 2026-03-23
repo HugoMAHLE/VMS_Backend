@@ -420,8 +420,7 @@ const countries = async() => {
   return rows;
 }
 
-
-export const VisitorModel = {
+const VisitorModel = {
   countries,
   findVisitorByEmail,
   findVisitorsByCompany,
@@ -445,4 +444,5 @@ export const VisitorModel = {
   printStatus,
 }
 
+module.exports = { VisitorModel };
 

@@ -31,12 +31,16 @@ app.get('/', (req, res) => {
 
 // Error Handlers for crashes
 process.on('uncaughtException', (err) => {
+  console.error('Full Uncaught Exception:', err);
   logger('Uncaught Exeption: ' + err.message, "START", "ERROR");
+  console.error(err.stack);
   process.exit(1);
 });
 
-process.on('unhandledRejection', (err) => {
-  logger('Unhandled Rejection: ' + err.message, "START", "ERROR");
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Full Unhandled Rejection:', reason);
+  logger('Unhandled Rejection: ' + (reason?.message || reason), "START", "ERROR");
+  console.error('Promise:', promise);
   process.exit(1);
 });
 

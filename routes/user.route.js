@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { UserController } from "../controlers/user.controller.js";
-import { verifyToken } from "../middlewares/jwt.middleware.js";
+const { Router } = require("express");
+const { UserController } = require("../controlers/user.controller.js");
+const { verifyToken } = require("../middlewares/jwt.middleware.js");
 
 const router = Router()
 
@@ -19,4 +19,4 @@ router.get('/get-host-visits', UserController.getHostVisits)
 //   res.send("Welcome Admin");
 // });
 
-export default router;
+module.exports = router;

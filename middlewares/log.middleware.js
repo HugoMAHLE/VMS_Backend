@@ -1,9 +1,5 @@
-import fs from 'fs';  
-import { fileURLToPath } from 'url';
-import path from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const fs = require('fs');  
+const path = require('path');
 
 const getLogFilePath = () => {
     const today = new Date().toISOString().split('T')[0]; // Obtiene YYYY-MM-DD
@@ -30,4 +26,4 @@ const saveLog = (msg, module = 'GENERAL', level = 'INFO') => {
     }
 };
 
-export { saveLog };
+module.exports = { saveLog };

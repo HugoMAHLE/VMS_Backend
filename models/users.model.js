@@ -126,8 +126,7 @@ const updatePassword = async(email, newPassword) => {
   return rows[0]
 }
 
-
-export const UserModel = {
+const UserModel = {
   createUser,
   findOneByEmail,
   findOneById,
@@ -139,4 +138,4 @@ export const UserModel = {
   updatePassword,
 };
 
-export default UserModel;
+module.exports = { UserModel };

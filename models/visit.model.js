@@ -140,7 +140,7 @@ const getVisitGuests = async (code) => {
   }
 }
 
-export const VisitModel = {
+const VisitModel = {
   findVisitByCode,
   sendMailConfirmation,
   findHostById,
@@ -148,4 +148,5 @@ export const VisitModel = {
   getVisitGuests
 }
 
+module.exports = { VisitModel };
 

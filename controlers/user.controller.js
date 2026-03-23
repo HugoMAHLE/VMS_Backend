@@ -1,6 +1,6 @@
-import { UserModel } from "../models/users.model.js";
-import bcryptjs from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+const { UserModel } = require("../models/users.model.js");
+const bcryptjs = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 // api/v1/users/register
 const register = async(req, res) => {
@@ -230,7 +230,7 @@ const restartPassword = async(req, res) => {
   }
 }
 
-export const UserController = {
+const UserController = {
   register,
   login,
   getProfile,
@@ -240,3 +240,5 @@ export const UserController = {
   getHostVisits,
   restartPassword
 }
+
+module.exports = { UserController };

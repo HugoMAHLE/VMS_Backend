@@ -1,0 +1,8 @@
+Database connected
+(node:22184) ExperimentalWarning: CommonJS module d:\Projects\vms\VMS_Backend\routes\user.route.js is loading ES Module d:\Projects\vms\VMS_Backend\controlers\user.controller.js using require().
+Support for loading ES Module in require() is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:22184) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///d:/Projects/vms/VMS_Backend/models/users.model.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to d:\Projects\vms\VMS_Backend\package.json.
+Connected to MSSQL

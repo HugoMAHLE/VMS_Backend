@@ -1,6 +1,6 @@
-import { VisitorModel } from "../models/visitor.model.js";
-import { UserModel } from "../models/users.model.js";
-import jwt from 'jsonwebtoken'
+const { VisitorModel } = require("../models/visitor.model.js");
+const { UserModel } = require("../models/users.model.js");
+const jwt = require('jsonwebtoken')
 
 
 // api/v1/visitor/create
@@ -384,7 +384,7 @@ const getCountries = async(req, res) => {
   }
 }
 
-export const VisitorController = {
+const VisitorController = {
   createVisitor,
   getVisitors,
   getVisitorByEmail,
@@ -401,3 +401,5 @@ export const VisitorController = {
   updateLabelPrintStatus,
   updateVisitorMigration,
 }
+
+module.exports = { VisitorController };

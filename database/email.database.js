@@ -1,4 +1,4 @@
-import sql from 'mssql';
+const sql = require('mssql');
 
 const config = {
   user: 'dlocapp',
@@ -11,7 +11,7 @@ const config = {
   },
 };
 
-export const edb = new sql.ConnectionPool(config)
+const edb = new sql.ConnectionPool(config)
   .connect()
   .then((pool) => {
     console.log('Connected to MSSQL');
@@ -22,4 +22,4 @@ export const edb = new sql.ConnectionPool(config)
     throw err;
   });
 
-export { sql };
+module.exports = { edb, sql };

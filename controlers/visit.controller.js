@@ -1,5 +1,5 @@
-import { VisitModel } from "../models/visit.model.js";
-import { VisitorModel } from "../models/visitor.model.js";
+const { VisitModel } = require("../models/visit.model.js");
+const { VisitorModel } = require("../models/visitor.model.js");
 
 // api/v1/get-visit-info
 const getVisit = async (req, res) => {
@@ -112,9 +112,11 @@ const sendCode = async (req, res) => {
   }
 };
 
-export const VisitController = {
+const VisitController = {
   getVisit,
   sendCode,
   getRecepVisit,
   getVisitGuests
 }
+
+module.exports = { VisitController };
